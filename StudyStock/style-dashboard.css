@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700");
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    min-height: 150vh;
+}
+
+.btn_refrescar{
+  border-radius: 5px;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+}
+
+.btn_refrescar:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+
+/* Estilos personalizados para el botón Dashboard */
+.dashboard-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px; /* Ajusta el tamaño del botón */
+  cursor: pointer;
+}
+
+.dashboard-button:hover {
+  background-color: #555;
+}
+
+.hidden {
+  display: none;
+}
+
+
+

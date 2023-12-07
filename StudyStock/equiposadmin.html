@@ -1,0 +1,215 @@
+!DOCTYPE html>
+
+
+<html lang="en">   
+<head>
+  <title>StudyStock||Inicio</title>
+  <link rel="stylesheet" href="style-administrador.css" />
+  <link href = "https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel= "stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script 
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+  
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-dark color-nav fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)"></a>
+    <img src="imagenes/logo.png" alt="logotipo" class="logo-principal" />
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="index.html">StudyStock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Quienes_Somos.html">Quienes Somos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Contactanos.html">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Necesitas_Ayuda.html">¿Necesitas Ayuda?</a>
+        </li>
+      </ul>
+
+      <!-- Barra de búsqueda (sin colapso) -->
+      <div class="barra-buscar">
+        <input type="text" placeholder="Buscar...">
+      </div>
+    </div>
+    
+    <!-- Contenedor para "Iniciar Sesión" y el icono de la mochila (fuera del colapso) -->
+    <div class="extra-nav-items">
+      <!-- dropdown -->
+      <div class="select-menu">
+          <div class="select-btn">
+              <span class="sBtn-text">Administrador</span>
+              <i class="bx bx-chevron-down"></i>
+          </div>
+          <ul class="options">
+              <li class="option">
+                <a href="administrar-admin.html">
+                  <span class="option-text">Administrar</span>
+                </a>
+              </li>
+              <li class="option">
+                <a href="generar-reporte.html">
+                  <span class="option-text">Generar Reporte</span>
+                </a>
+              </li>
+              <li class="option">
+                    <a href="Necesitas_Ayuda.html">
+                  <span class="option-text">Servicio al Cliente</span>
+                    </a>
+              </li>
+              <li class="option">
+                  <a href="index.html">
+                      <span class="option-text">Cerrar Sesión</span>
+                  </a>
+              </li>
+          </ul>
+      </div>
+
+      
+      <div class="container-icon">
+        <div class="container-cart-icon">
+          <img src="imagenes/mochila.png" alt="Carrito" class="icon-cart" id="mostrar-carrito" />
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+						/>
+					</svg>
+					<div class="count-products">
+						<span id="contador-productos">0</span>
+					</div>
+				</div>
+				<div class="container-cart-products hidden-cart">
+					<div class="row-product hidden">
+						<div class="cart-product">
+							<div class="info-cart-product">
+								<span class="cantidad-producto-carrito"></span>
+								<p class="titulo-producto-carrito"></p>
+								<span class="precio-producto-carrito"></span>
+							</div>
+							<svg
+								xmlns="<URL>"
+								fill="<URL>"
+								viewBox="<URL>"
+								stroke-width="<URL>"
+								stroke="<URL>"
+								class="<URL>"
+							>
+								<path
+									stroke-linecap="<URL>"
+									stroke-linejoin="<URL>"
+									d="<URL>"
+								/>
+							</svg>
+						</div>
+					</div>
+
+					<div class="<URL> hidden">
+						<h3>Total:</h3>
+						<span class="<URL>"></span>
+					</div>
+					<p class="<URL>">La mochila está vacía</p>
+				</div>
+			</div>
+    </div>
+  </div>
+</nav>
+<!-- NAVBAR  -->
+
+<div class="container-fluid mt-3 d-flex justify-content-center align-items-center" style="margin-top: 80px;">
+  <h3 class="display-0">StudyStock</h3>
+</div>
+
+<div class="container-fluid mt-3 text-center color-nav">
+  <p></p>
+  <hr>
+  <h3>Equipos</h3>
+  <p></p>
+  <hr> <!-- Línea horizontal -->
+</div>
+
+</header>
+
+<div class="container-items d-flex justify-content-center align-items-center">
+  <!-- Equipo 1 -->
+  <div class="item">
+    <figure>
+      <img src="https://tecnologiaseducativas.cl/wp-content/uploads/2021/07/71Uk0mA36xL._AC_SL1300_-600x1098.jpg" alt="Calculadora Cientifica Sharp" />
+    </figure>
+    <div class="info-product">
+      <h2>Calculadora Cientifica Sharp</h2>
+      <button class="btn-add-cart" id="btn-producto-1">
+        <a href="historialprestamos.html" style="text-decoration: none; color: inherit;">Ver historial de prestamos</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- Equipo 2 -->
+  <div class="item">
+    <figure>
+      <img src="https://a-static.mlcdn.com.br/1500x1500/notebook-lenovo-ideapad-s145-intel-core-i7-8gb-1tb-156-full-hd-placa-de-video-2gb/magazineluiza/224068400/706b9022656672f8303abc28955f838a.jpg" alt="Notebook Lenovo" />
+    </figure>
+    <div class="info-product">
+      <h2>Notebook Lenovo</h2>
+      <button class="btn-add-cart" id="btn-producto-2">
+        <a href="historialprestamos.html" style="text-decoration: none; color: inherit;">Ver historial de prestamos</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- Equipo 3 -->
+  <div class="item">
+    <figure>
+      <img src="https://images2.lojasparaguai.com.br/produtos/lojas/casa-bo/calculadora-hp-prime-grafica.jpg" alt="Calculadora Grafica" />
+    </figure>
+    <div class="info-product">
+      <h2>Calculadora Grafica</h2>
+      <button class="btn-add-cart" id="btn-producto-3">
+        <a href="historialprestamos.html" style="text-decoration: none; color: inherit;">Ver historial de prestamos</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- Equipo 4 -->
+  <div class="item">
+    <figure>
+      <img src="https://media.metrolatam.com/2019/01/08/i5-8bf49a921f28ed285d5573916f0aada7.jpg" alt="Computadora Cuantica" />
+    </figure>
+    <div class="info-product">
+      <h2>Computadora Cuantica</h2>
+      <button class="btn-add-cart" id="btn-producto-4">
+        <a href="historialprestamos.html" style="text-decoration: none; color: inherit;">Ver historial de prestamos</a>
+      </button>
+    </div>
+  </div>
+
+  <!-- Equipo 5 -->
+  <div class="item">
+    <figure>
+      <img src="https://www.triplee.cl/2336-large_default/router-inalambrico-n-dual-band-600-mbps-gigabit-tl-wdr3600.jpg" alt="Router" />
+    </figure>
+    <div class="info-product">
+      <h2>Router</h2>
+      <button class="btn-add-cart" id="btn-producto-5">
+        <a href="historialprestamos.html" style="text-decoration: none; color: inherit;">Ver historial de prestamos</a>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

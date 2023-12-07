@@ -1,0 +1,8 @@
+{
+    "editor.defaultFoldingRangeProvider": null,
+    "editor.defaultFormatter": null,
+    "[html]": {
+        "editor.defaultFoldingRangeProvider": "vscode.html-language-features",
+        "editor.defaultFormatter": "vscode.html-language-features"
+    }
+}

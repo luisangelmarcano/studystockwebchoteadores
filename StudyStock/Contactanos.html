@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+
+
+<html lang="en">   
+<head>
+  <title>Contactonos</title>
+  <link rel="stylesheet" href="style-contactanos.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script 
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+
+  
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-dark color-nav fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)"></a>
+    <img src="imagenes/logo.png" alt="logotipo" class="logo-principal" />
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="index.html">StudyStock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Quienes_Somos.html">Quienes Somos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Contactanos.html">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Necesitas_Ayuda.html">¿Necesitas Ayuda?</a>
+        </li>
+      </ul>
+
+      <a class="extra-nav-item">
+        <!-- Cambiado de <button> a <a> -->
+        <a id="botonDashboard" class="btn btn-warning" style="display: none;">DashBoard</a>
+      </a>
+
+      <a href="login.html" class="extra-nav-item"><button class="ingresar-button">Iniciar Sesion</button></a>
+
+      <script src="script.js"></script>
+      <script>
+        window.onload = function () {
+          // Recuperar la información del usuario del almacenamiento local
+          var rut = localStorage.getItem('rut');
+          var perfil = localStorage.getItem('perfil');
+          var nombre = localStorage.getItem('nombre');
+          var permisos = localStorage.getItem('permisos');
+
+          // Obtener referencia al botón de Dashboard y al botón de Iniciar Sesión
+          var botonDashboard = document.getElementById('botonDashboard');
+          var botonIniciarSesion = document.querySelector('.ingresar-button');
+
+          // Actualizar el contenido de la página con la información del usuario
+          if (rut && perfil) {
+            // Ocultar el botón de inicio de sesión
+            botonIniciarSesion.style.display = 'none';
+
+            // Mostrar el botón de Dashboard si el usuario tiene al menos uno de los permisos requeridos
+            if (tienePermisos(permisos)) {
+              botonDashboard.style.display = 'inline-block';
+
+              // Agregar el atributo href al botón de Dashboard
+              botonDashboard.setAttribute('href', 'panelDashboard.html');
+
+              var userInfo = document.createElement('div'); // Crear un nuevo div para mostrar la información del usuario
+              userInfo.innerHTML =
+                '👤 Hola ' +
+                nombre +
+                ' STATUS: ONLINE 🟢 <button class="cerrarSesionbtn" onclick="cerrarSesion()">Cerrar Sesión</button>';
+              userInfo.style.marginLeft = 'auto'; // Mover el contenido a la derecha
+              userInfo.style.textAlign = 'right'; // Alinear el texto a la derecha
+
+              document.querySelector('.navbar-nav').appendChild(userInfo); // Agregar la información del usuario a la barra de navegación
+            } else {
+              var userInfo = document.createElement('div'); // Crear un nuevo div para mostrar la información del usuario
+              userInfo.innerHTML =
+                '👤 Hola ' +
+                nombre +
+                ' STATUS: ONLINE 🟢 <button class="cerrarSesionbtn1" onclick="cerrarSesion()">Cerrar Sesión</button>';
+              userInfo.style.marginLeft = 'auto'; // Mover el contenido a la derecha
+              userInfo.style.textAlign = 'right'; // Alinear el texto a la derecha
+              
+              document.querySelector('.navbar-nav').appendChild(userInfo); // Agregar la información del usuario a la barra de navegación
+              
+              botonDashboard.style.display = 'none';
+            }
+          } else {
+            // Si no hay sesión iniciada, ocultar el botón de Dashboard
+            botonDashboard.style.display = 'none';
+          }
+        };
+
+        function tienePermisos(permisos) {
+          // Verificar si el usuario tiene al menos uno de los permisos requeridos
+          return (
+            permisos.includes('permiso-inventario') ||
+            permisos.includes('permiso-solicitudes') ||
+            permisos.includes('permiso-prestamos') ||
+            permisos.includes('permiso-administrativa')
+          );
+        }
+
+        function cerrarSesion() {
+          // Eliminar la información del usuario del almacenamiento local
+          localStorage.removeItem('rut');
+          localStorage.removeItem('perfil');
+          localStorage.removeItem('nombre');
+          localStorage.removeItem('permisos');
+
+          // Recargar la página para reflejar los cambios
+          location.reload();
+        }
+      </script>
+      <!-- Fin del código JavaScript -->
+
+    </div>
+  </div>
+</nav>
+<!-- FIN NAVBAR -->
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-fluid mt-3 text-center">
+  <p></p>
+  <hr>
+  <h3>Contactanos</h3>
+  <p></p>
+  <hr> <!-- Línea horizontal -->
+</div>
+
+
+
+
+
+
+
+  <!-- Sección "Contactanos" -->
+  <div class="container-content">
+    <h2>¡Te Responderemos!</h2>
+    <div class="contact-form">
+      <p style="text-align: center;">Chatea con nosotros, te responderemos lo antes posible:</p>
+      <div style="text-align: center;">
+        <textarea id="message" rows="4" cols="50" style="width: 100%;"></textarea>
+      </div>
+      <br>
+      <div style="text-align: center;">
+        <button class="submit-button" onclick="openModal()">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <p style="color: black;">Mensaje enviado correctamente <span style="color: #4CAF50; font-size: 24px;">✔</span></p>
+      <button class="close-button" onclick="closeModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Mensaje de confirmación -->
+  <div class="confirmation-message">Mensaje enviado correctamente</div>
+
+  <script>
+    function openModal() {
+      const modal = document.getElementById('myModal');
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('myModal');
+      modal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
+  <!-- Sección "Juega mientras esperas" -->
+  <div class="container-content">
+    <h2>Juega mientras esperas</h2>
+    <table class="tic-tac-toe">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    <p class="result-message"></p>
+  </div>
+
+  <script>
+    const cells = document.querySelectorAll('.tic-tac-toe td');
+    let currentPlayer = 'X';
+    let gameOver = false;
+
+    cells.forEach(cell => {
+      cell.addEventListener('click', () => {
+        if (!cell.textContent && !gameOver) {
+          cell.textContent = currentPlayer;
+          cell.classList.add(`player-${currentPlayer.toLowerCase()}`);
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+          checkGameResult();
+          if (!gameOver) {
+            makeMachineMove();
+          }
+        }
+      });
+    });
+
+    function checkGameResult() {
+      const winningCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+
+      for (const combo of winningCombos) {
+        const [a, b, c] = combo;
+        if (
+          cells[a].textContent &&
+          cells[a].textContent === cells[b].textContent &&
+          cells[a].textContent === cells[c].textContent
+        ) {
+          gameOver = true;
+          document.querySelector('.result-message').textContent = `¡Jugador ${cells[a].textContent} gana!`;
+          return;
+        }
+      }
+
+      if ([...cells].every(cell => cell.textContent)) {
+        gameOver = true;
+        document.querySelector('.result-message').textContent = '¡Empate!';
+      }
+    }
+
+    function makeMachineMove() {
+      const emptyCells = [...cells].filter(cell => !cell.textContent);
+      if (emptyCells.length === 0 || gameOver) {
+        return;
+      }
+
+      // Implementa una estrategia para la máquina aquí
+      const bestMove = findBestMove(emptyCells);
+      const randomCell = emptyCells[bestMove];
+      
+      randomCell.textContent = currentPlayer;
+      randomCell.classList.add(`player-${currentPlayer.toLowerCase()}`);
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      checkGameResult();
+    }
+
+    function findBestMove(emptyCells) {
+      // Implementa aquí una estrategia para la máquina más inteligente
+      // Por simplicidad, puedes usar una estrategia aleatoria aquí
+      const randomIndex = Math.floor(Math.random() * emptyCells.length);
+      return randomIndex;
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+  <!-- Imagen de la IA en la esquina inferior derecha -->
+  <img src="imagen-ia.png" alt="IA" class="ai-image">
+
+  <script>
+    function openModal() {
+      const modal = document.getElementById('myModal');
+      modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('myModal');
+      modal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<body>
+  <footer class="footer">
+    <div class="container bg-skin">
+      <div class="row">
+        <div class="footer-col">
+          <h4>Study Stock</h4>
+          <ul>
+            <!-- Modifica el href para que apunte a la página ¿Quienes Somos?.html -->
+            <li><a href="Quienes_Somos.html">Quienes Somos</a></li>
+            <li><a href="Contactanos.html">Contactanos</a></li>
+            <li><a href="Necesitas_Ayuda.html">¿Necesitas Ayuda?</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>¡Siguenos!</h4>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+
+
+
+
+
+
+  <script src="script.js"></script>
+	</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Materiales</title>
+  <link rel="stylesheet" href="style-prueba.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+
+
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-dark color-nav fixed-top">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="javascript:void(0)"></a>
+      <img src="imagenes/logo.png" alt="logotipo" class="logo-principal" />
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mynavbar">
+          <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                  <a class="nav-link text-white" href="index.html">StudyStock</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white" href="Quienes_Somos.html">Quienes Somos</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white" href="Contactanos.html">Contacto</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link text-white" href="Necesitas_Ayuda.html">¿Necesitas Ayuda?</a>
+              </li>
+          </ul>
+
+          <!-- Mover "Iniciar Sesión" y el icono de la mochila aquí dentro -->
+          <a href="login.html" class="extra-nav-item"><button class="ingresar-button" style="color: white;">Iniciar Sesión</button></a>
+          
+          <!-- Aquí está el código JavaScript alineado -->
+          <script>
+ window.onload = function () {
+  // Recuperar la información del usuario del almacenamiento local
+  var rut = localStorage.getItem('rut');
+  var perfil = localStorage.getItem('perfil');
+  var nombre = localStorage.getItem('nombre');
+  userId = localStorage.getItem('userId');
+
+  // Actualizar el contenido de la página con la información del usuario
+  if (rut && perfil) {
+    document.querySelector('.ingresar-button').style.display = 'none'; // Ocultar el botón de inicio de sesión
+    var userInfo = document.createElement('ul'); // Crear un nuevo div para mostrar la información del usuario
+    userInfo.innerHTML =
+      '👤 Hola ' +
+      nombre +
+      ' STATUS: ONLINE 🟢 <button class="ingresar-button" style="color: white;" onclick="cerrarSesion()">Cerrar Sesión</button>';
+    userInfo.style.marginLeft = 'auto'; // Mover el contenido a la derecha
+    document.querySelector('.navbar-nav').appendChild(userInfo); // Agregar la información del usuario a la barra de navegación
+  }
+};
+
+              function cerrarSesion() {
+                  // Eliminar la información del usuario del almacenamiento local
+                  localStorage.removeItem('rut');
+                  localStorage.removeItem('perfil');
+                  localStorage.removeItem('nombre');
+                  localStorage.removeItem('userId');
+
+                  // Recargar la página para reflejar los cambios
+                  location.reload();
+              }
+          </script>
+          <!-- Fin del código JavaScript -->
+
+      </div>
+  </div>
+</nav>
+<!-- FIN NAVBAR -->
+<script>
+  function CrearTicket() {
+    console.log("ID del Producto:", idProducto3);
+    console.log(userId);
+    
+    // Mutación para agregar un ticket
+    var agregarTicketMutation = `
+      mutation AgregarTicket($input: TicketInput) {
+        agregarTicket(input: $input) {
+          id
+          fecha
+        }
+      }
+    `;
+
+    // Inputs para la mutación AgregarTicket
+    var inputAgregarTicket = {
+      "input": {
+        "usuario": userId,
+        "producto": idProducto3
+      }
+    };
+
+    // Obtener el token JWT (asumiendo que ya está almacenado en el localStorage)
+    var token = localStorage.getItem('jwtToken');
+
+    // Realizar la llamada GraphQL para agregar un ticket
+    fetch('http://localhost:8091/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        query: agregarTicketMutation,
+        variables: inputAgregarTicket
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Manejar la respuesta de la mutación AgregarTicket
+      if (data.errors) {
+        console.error(data.errors);
+        alert('Error al solicitar préstamo');
+      } else {
+        // Éxito al agregar el ticket, ahora llamamos a la mutación CrearSolicitud
+        console.log('Ticket agregado correctamente. ID del Ticket:', data.data.agregarTicket.id);
+
+        // Mutación para crear una solicitud después de agregar el ticket
+        var crearSolicitudMutation = `
+          mutation CrearSolicitud($input: CrearSolicitudInput) {
+            CrearSolicitud(input: $input) {
+              id
+              estado
+              fechaDevuelta
+            }
+          }
+        `;
+
+        // Inputs para la mutación CrearSolicitud
+        var inputCrearSolicitud = {
+          "input": {
+            "ticket": data.data.agregarTicket.id
+          }
+        };
+
+        // Realizar la llamada GraphQL para crear una solicitud después de agregar el ticket
+        fetch('http://localhost:8091/graphql', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify({
+            query: crearSolicitudMutation,
+            variables: inputCrearSolicitud
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Manejar la respuesta de la mutación CrearSolicitud
+          if (data.errors) {
+            console.error(data.errors);
+            alert('Error al crear la solicitud');
+          } else {
+            // Éxito, mostrar alerta con la información de la solicitud
+            alert(`Solicitud creada correctamente:\nID de Solicitud: ${data.data.CrearSolicitud.id}`);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Error al crear la solicitud');
+        });
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Error al solicitar préstamo');
+    });
+  }
+</script>
+
+
+
+
+
+   <!-- Texto "CATÁLOGO DE MATERIALES " -->
+   <div class="catalogo-texto">
+    <h2>CATÁLOGO DE MATERIALES</h2>
+  </div>
+  <hr>
+  <section class="contenido">
+    <div class="mostrador" id="mostrador">
+      <div class="fila" id="catalogo-container">
+        <!-- Contenido del catálogo -->
+        <div id="container" style="display: contents;"></div> <!-- Este es el nuevo contenedor para los productos -->
+      </div>
+    </div>
+
+    <!-- CONTENEDOR DEL ITEM SELECCIONADO -->
+    <div class="seleccion" id="seleccion">
+      <div class="cerrar" onclick="cerrar()">
+         &times;
+      </div>
+      <div class="info">
+        <h1 id="nombreproducto3"></h1>
+        <img src="img/1.png" alt="" id="img">
+        <p id="detalle3"></p>
+        
+        <div class="fila">
+
+          <button onclick="CrearTicket()">Solicitar préstamo</button>
+    </div>
+  </section>
+  <body>
+    <footer class="footer">
+      <div class="container bg-skin text-dark">
+        <div class="row">
+          <div class="footer-col text-dark">
+            <h4>Study Stock</h4>
+            <ul>
+              <div class="social-links">
+              <li><a href="Quienes_Somos.html"><img
+              src="imagenes/nosotros.png"
+              alt="producto"
+            /></a>Quienes Somos</li>
+              <li><a href="Contactanos.html"><img
+              src="imagenes/contacto.png"
+              alt="producto"
+            /></a>Contactanos</li>
+              <li><a href="Necesitas_Ayuda.html"><img
+              src="imagenes/help.png"
+              alt="producto"
+            /></a>¿Necesitas ayuda?</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>¡Siguenos!</h4>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  <script src="scriptm.js"></script>
+  <script>getMateriales();</script>
+</body>
+</html>
+
+

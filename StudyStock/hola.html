@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css"> 
+  <title>Página de Inicio</title>
+  <style>
+    body {
+      background-color: #FAD6A5;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      padding: 50px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .gallery img {
+      max-width: 100%;
+      height: 100%;
+      /* Imágenes con mismo tamaño */
+      background-color: #FAD6A5;
+      /* Fondo color piel */
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .logo {
+      max-width: 100px;
+      height: auto;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      padding: 10px;
+      border: none;
+      width: 80%;
+      /* Ancho del 80% para que sea más largo */
+      max-width: 600px;
+      /* Establece un máximo para mantener la legibilidad */
+    }
+
+    .search-button {
+      background-color: #E6B482;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .login-button {
+      background-color: #C4966B;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .cart-button {
+      background-color: transparent;
+      /* Fondo transparente */
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .options {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+    }
+
+    .option {
+      position: relative;
+      flex: 1;
+      padding: 20px;
+      background-color: #8F674E;
+      /* Color más oscuro */
+      color: #fff;
+      /* Letras blancas */
+      margin: 10px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 20px;
+      /* Bordes redondos */
+    }
+
+    .option img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 50px;
+    }
+
+    .gallery img {
+      max-width: 50%;
+      /* Cambio del tamaño de la imagen al 50% */
+      height: auto;
+      background-color: #FAD6A5;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .most-requested {
+      font-size: 24px;
+      margin-top: 50px;
+    }
+
+    .white-bg {
+      background-color: white;
+      padding: 50px 0;
+      border-radius: 0 0 20px 20px;
+    }
+
+    .footer {
+      background-color: #FAD6A5;
+      padding: 20px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .footer-logo {
+      max-width: 50px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .cart-icon {
+      max-width: 60px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .cart-button {
+      display: flex;
+      align-items: center;
+      border-radius: 10px 0 0 10px;
+      /* Radios en la esquina izquierda */
+      overflow: hidden;
+      /* Evitar que elementos internos sobresalgan */
+    }
+
+    .login-button {
+      background-color: #C4966B;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 0 10px 10px 0;
+      /* Radios en la esquina derecha */
+    }
+
+    .modal-content {
+      background-color: #FAD6A5;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .login-form {
+      margin-top: 20px;
+    }
+
+    .login-form label {
+      display: block;
+      font-weight: bold;
+    }
+
+
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+      border: 2px solid #ccc;
+      padding: 12px;
+      margin-bottom: 10px;
+      width: 85%;
+      box-sizing: border-box;
+    }
+
+    .login-button-modal {
+      background-color: #C4966B;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      margin-top: 20px;
+      border-radius: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .login-button-modal:hover {
+      background-color: #E6B482;
+      color: #fff;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #C4966B;
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .menu-icon {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+      z-index: 1001;
+      /* Asegura que el ícono de menú esté por encima de todo */
+    }
+
+    .cart-button {
+      display: flex;
+      align-items: center;
+      border-radius: 10px 0 0 10px;
+      overflow: hidden;
+      margin-right: 20px;
+    }
+
+    .bar {
+      width: 30px;
+      height: 4px;
+      background-color: #000;
+    }
+
+    .categories-menu {
+      position: fixed;
+      /* Cambiado a posición fija */
+      top: 0;
+      right: -300px;
+      /* Inicialmente oculto fuera de la pantalla */
+      width: 300px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.2);
+      transition: right 0.3s ease;
+      z-index: 1001;
+      /* Asegura que el menú esté por encima del contenido */
+    }
+
+    .white-bg {
+      background-color: white;
+      padding: 50px 0;
+      border-radius: 0 0 20px 20px;
+      position: relative;
+      /* Agregado */
+      z-index: 999;
+      /* Asegura que el fondo blanco esté por encima del contenido */
+    }
+
+    .categories {
+      padding: 20px;
+    }
+
+    .categories h3 {
+      margin-bottom: 10px;
+      color: #000;
+    }
+
+    .categories ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .categories li {
+      margin-bottom: 10px;
+      color: #000;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .categories li:hover {
+      color: #E6B482;
+    }
+  </style>
+</head>
+
+
+
+
+  
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css"> <!-- Asegúrate de enlazar tu hoja de estilos aquí -->
+  <title>Tu Título Aquí</title>
+</head>
+<body>
+  <div class="header">
+    <img src="foto1.jpg" alt="Logo" class="logo">
+    <div class="search-container">
+      <input type="text" class="search-box" id="buscar" placeholder="Buscar..." name="buscar">
+      <button class="search-button">Buscar</button>
+      <button class="login-button" onclick="toggleLogin()">Ingresar</button>
+    </div>
+    <button class="menu-icon" onclick="toggleCategories()">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </button>
+    
+    <button class="cart-button" onclick="openCartModal()">
+      <img src="mochila.png" alt="Mochila" class="cart-icon" id="cart-icon">
+    </button>
+    
+    <!-- Modal -->
+    <div class="modal-overlay" id="cart-modal">
+      <div class="modal-content">
+        <button class="close-button" onclick="closeCartModal()">x</button>
+        <!-- Contenido del modal del carrito -->
+        <!-- Agrega aquí el contenido que deseas mostrar en el modal del carrito -->
+      </div>
+    </div>
+  </div>
+  
+  <div class="options">
+    <div class="option">
+      <img src="imagen-libros.jpg" alt="Libros">
+      <br>Libros
+    </div>
+    <div class="categories-menu">
+      <div class="categories">
+        <h3>Categorías</h3>
+        <ul>
+          <li>Libros</li>
+          <li>Dispositivos</li>
+          <li>Materiales</li>
+        </ul>
+      </div>
+    </div>
+    <div class="option">
+      <img src="imagen-materiales.jpg" alt="Materiales">
+      <br>Materiales
+    </div>
+    <div class="option">
+      <img src="imagen-dispositivos.jpg" alt="Dispositivos">
+      <br>Dispositivos
+    </div>
+  </div>
+  
+  <div class="most-requested">Artículos más solicitados</div>
+            			<div class="container-icon">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="icon-cart"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+					/>
+				</svg>
+				<div class="count-products">
+					<span id="contador-productos">0</span>
+				</div>
+
+				<div class="container-cart-products hidden-cart">
+					<div class="cart-product">
+						<div class="info-cart-product">
+                            <span class="cantidad-producto-carrito">1</span>
+                            <p class="titulo-producto-carrito">Zapatos Nike</p>
+                            <span class="precio-producto-carrito">$80</span>
+                        </div>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="icon-close"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					</div>
+                    <div class="cart-total">
+                        <h3>Total:</h3>
+                        <span class="total-pagar">$200</span>
+                    </div>
+				</div>
+			</div>
+		</header>
+		<div class="container-items">
+			<div class="item">
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+						alt="producto"
+					/>
+				</figure>
+				<div class="info-product">
+					<h2>Zapatos Nike</h2>
+					<p class="price">$80</p>
+					<button>Añadir al carrito</button>
+				</div>
+			</div>
+			<div class="item">
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+						alt="producto"
+					/>
+				</figure>
+				<div class="info-product">
+					<h2>Audifonos</h2>
+					<p class="price">$20</p>
+					<button>Añadir al carrito</button>
+				</div>
+			</div>
+			<div class="item">
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1099&q=80"
+						alt="producto"
+					/>
+				</figure>
+				<div class="info-product">
+					<h2>Reloj</h2>
+					<p class="price">$50</p>
+					<button>Añadir al carrito</button>
+				</div>
+			</div>
+			<div class="item">
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+						alt="producto"
+					/>
+				</figure>
+				<div class="info-product">
+					<h2>Smartwatch</h2>
+					<p class="price">$90</p>
+					<button>Añadir al carrito</button>
+				</div>
+			</div>
+			<div class="item">
+				<figure>
+					<img
+						src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80"
+						alt="producto"
+					/>
+				</figure>
+				<div class="info-product">
+					<h2>Perfume</h2>
+					<p class="price">$50</p>
+					<button>Añadir al carrito</button>
+				</div>
+			</div>
+		</div>
+    <script src="script.js"></script>
+
+
+
+
+
+
+  
+  
+  <div class="footer">
+    <img src="logo.png" alt="Logo" class="footer-logo">
+    © 2023 Grupo Choteadores. Todos los derechos reservados. Sitio web creado con pasión y creatividad por el Grupo
+    Choteadores. Estamos comprometidos con brindar recursos educativos excepcionales. Política de Privacidad | Términos
+    y Condiciones
+  </div>
+  
+  <!-- Modal de Login -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-content">
+      <button class="close-button" onclick="closeModal()">x</button>
+      <h2>Bienvenido</h2>
+      <form class="login-form">
+        <input type="text" name="rut" value="" placeholder="Ingresa tu Rut">
+        <input type="password" name="password" value="" placeholder="Ingresa tu Contraseña">
+        <div class="form-check mb-3">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember"> Recuérdame
+          </label>
+        </div>
+        <button class="login-button-modal" id="loginButton" onclick="login(event)"> Ingresar </button>
+        <button class="login-button-modal" id="logoutButton" style="display: none;" onclick="logout()">Cerrar Sesión</button>
+      </form>
+      <p><a href="javascript:void(0);" onclick="openForgotPasswordModal()">¿Olvidaste tu contraseña?</a></p>
+    </div>
+  </div>
+
+  <!-- Ventana emergente de recuperación de contraseña -->
+  <div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal-content">
+      <button class="close-button" onclick="closeForgotPasswordModal()">x</button>
+      <h2>Recuperar Contraseña</h2>
+      <form class="forgot-password-form">
+        <input type="email" name="email" value="" placeholder="Ingresa tu correo electrónico">
+        <button class="recover-button-modal"> Enviar </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isLoggedIn = false;
+
+    function openModal() {
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("loginButton").textContent = "Ingresar"; // Reiniciar el texto del botón
+
+      const rutInput = document.querySelector('input[name="rut"]');
+      const passwordInput = document.querySelector('input[name="password"]');
+
+      rutInput.value = ""; // Limpiar los campos al abrir el modal
+      passwordInput.value = "";
+
+      rutInput.addEventListener('input', () => {
+        document.getElementById("loginButton").textContent = "Ingresar";
+      });
+
+      passwordInput.addEventListener('input', () => {
+        document.getElementById("loginButton").textContent = "Ingresar";
+      });
+    }
+
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+
+    function openForgotPasswordModal() {
+      const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+      forgotPasswordModal.style.display = 'flex';
+    }
+
+    function closeForgotPasswordModal() {
+      const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+      forgotPasswordModal.style.display = 'none';
+    }
+
+    function login(event) {
+      event.preventDefault(); // Prevenir el envío del formulario
+    
+      const rut = document.querySelector('input[name="rut"]').value;
+      const password = document.querySelector('input[name="password"]').value;
+    
+      if (rut === "admin" && password === "admin123") {
+        document.querySelector('.login-button').textContent = "Administrador";
+        isLoggedIn = true;
+        closeModal(); // Cerrar la ventana emergente
+        showWelcomePopup("Administrador");
+        document.getElementById('logoutButton').style.display = 'block'; // Mostrar el botón Cerrar Sesión
+      } else if (rut === "20.123.456-7" && password === "pepito123") {
+        document.querySelector('.login-button').textContent = "Usuario Pepito";
+        isLoggedIn = true;
+        closeModal(); // Cerrar la ventana emergente
+        showWelcomePopup("Usuario Pepito");
+        document.getElementById('logoutButton').style.display = 'block'; // Mostrar el botón Cerrar Sesión
+      }
+    }
+
+    function logout() {
+      isLoggedIn = false;
+      document.getElementById('logoutButton').style.display = 'none'; // Ocultar el botón Cerrar Sesión
+      document.querySelector('.login-button').textContent = "Ingresar";
+    }
+
+    function toggleLogin() {
+      if (isLoggedIn) {
+        document.getElementById('logoutButton').style.display = 'none';
+        isLoggedIn = false;
+      } else {
+        openModal();
+      }
+    }
+
+    function toggleCategories() {
+      const categoriesMenu = document.querySelector('.categories-menu');
+      categoriesMenu.style.right = categoriesMenu.style.right === '0px' ? '-300px' : '0px';
+    }
+
+    function openCartModal() {
+      const cartModal = document.getElementById('cart-modal');
+      cartModal.style.display = 'block';
+    }
+
+    function closeCartModal() {
+      const cartModal = document.getElementById('cart-modal');
+      cartModal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+

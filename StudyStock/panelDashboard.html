@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dashboard - Style</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+  <style>
+    /* Estilos personalizados para DataTable */
+        /* Estilos personalizados para DataTable */
+        #example_wrapper {
+            margin: 20px 0;
+        }
+
+        #example_filter input,
+        #example_length select {
+            margin-right: 10px;
+        }
+
+        .dataTables_info {
+            margin-top: 10px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table thead th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa;
+        }
+</style>
+</head>
+<body>
+
+
+
+
+  <script>
+    // Función para obtener los datos de una fila
+    function submitForm() {
+$("#editForm").submit(function (e) {
+    e.preventDefault();
+
+    // Obtener el ID del usuario y los datos del formulario
+    let userId = String($("#userId").val());
+    console.log("el valor de USerID es:", userId);
+    let formData = {
+        rut: $("#rut_id").val(),
+        pass: $("#password_usuario").val(),
+        nombre: $("#primernombre").val(),
+        apellido1: $("#PrimerApellido").val(),
+        apellido2: $("#SegundoApellido").val(),
+        carrera: $("#carrera_usuario").val(),
+        telefono: $("#telefono_id").val(),
+        correo: $("#correo_id").val()
+    };
+
+    // Llamar a la función de actualización
+    updateUsuario(userId, formData);
+});
+}
+
+// Cuando se hace clic en el botón "Guardar cambios", se envía el formulario
+$("#guardarCambiosBtn").click(function() {
+$("#editForm").submit();
+});
+
+  </script>
+  <script>
+    // Función para obtener los datos de una fila
+    function submitForm2() {
+    $("#editForm2").submit(function (e) {
+        e.preventDefault();
+
+        // Obtener el ID del producto y los datos del formulario
+        let productId = String($("#ProductoId").val());
+        console.log("El valor de ProductoId es:", productId);
+        let nombreproducto = $("#nombreproducto").val();
+        let detalles = $("#detalles").val();
+        let archivoInput = document.getElementById('archivo');
+        let archivo = archivoInput.files[0];
+
+        // Crear un objeto FormData para enviar el archivo
+        let formData = new FormData();
+        formData.append('nombreproducto', nombreproducto);
+        formData.append('detalles', detalles);
+
+        // Verificar si se seleccionó un archivo
+        if (archivo) {
+            formData.append('imagen', archivo);
+
+            // Enviar el archivo al servidor usando AJAX
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8091/subirImagen', // URL de tu endpoint en el servidor
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // `response` debe contener la dirección de la imagen después de ser guardada en el servidor
+                    let imagen = response;
+                    console.log('Imagen guardada en: ' + imagen);
+
+                    // Aquí puedes llamar a la función de actualización del producto con la nueva imagen
+                    let productoData = {
+                        nombreproducto: nombreproducto,
+                        detalle: detalles,
+                        imagen: imagen
+                    };
+                    modificarProducto(productId, productoData);
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            // Si no se seleccionó ningún archivo, solo actualizar los otros atributos del producto
+            let productoData = {
+                nombreproducto: nombreproducto,
+                detalle: detalles
+            };
+            modificarProducto(productId, productoData);
+        }
+    });
+}
+
+$("#guardarCambiosBtn2").click(function() {
+    $("#editForm2").submit();
+});
+
+</script>
+<script>
+  // Función para obtener los datos de una fila
+  function submitForm3() {
+  $("#editForm3").submit(function (e) {
+      e.preventDefault();
+
+      // Obtener el ID del producto y los datos del formulario
+      let productId = String($("#ProductoId2").val());
+      console.log("El valor de ProductoId es:", productId);
+      let nombreproducto = $("#nombreproducto2").val();
+      let autor= $("#autor").val();
+      let editorial = $("#editorial").val();
+      let detalles = $("#detalles2").val();
+      let archivoInput = document.getElementById('archivo2');
+      let archivo = archivoInput.files[0];
+
+      // Crear un objeto FormData para enviar el archivo
+      let formData = new FormData();
+      formData.append('nombreproducto', nombreproducto);
+      formData.append('autor', autor);
+      formData.append('editorial', editorial);
+      formData.append('detalles', detalles);
+
+      // Verificar si se seleccionó un archivo
+      if (archivo) {
+          formData.append('imagen', archivo);
+
+          // Enviar el archivo al servidor usando AJAX
+          $.ajax({
+              type: 'POST',
+              url: 'http://localhost:8091/subirImagen', // URL de tu endpoint en el servidor
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function (response) {
+                  // `response` debe contener la dirección de la imagen después de ser guardada en el servidor
+                  let imagen = response;
+                  console.log('Imagen guardada en: ' + imagen);
+
+                  // Aquí puedes llamar a la función de actualización del producto con la nueva imagen
+                  let productoData = {
+                      nombreproducto: nombreproducto,
+                      autor: autor,
+                      editorial: editorial,
+                      detalle: detalles,
+                      imagen: imagen
+                  };
+                  modificarProducto(productId, productoData);
+              },
+              error: function (error) {
+                  console.error(error);
+              }
+          });
+      } else {
+          // Si no se seleccionó ningún archivo, solo actualizar los otros atributos del producto
+          let productoData = {
+              nombreproducto: nombreproducto,
+              autor: autor,
+              editorial: editorial,
+              detalle: detalles
+          };
+          modificarProducto(productId, productoData);
+      }
+  });
+}
+
+$("#guardarCambiosBtn3").click(function() {
+  $("#editForm3").submit();
+});
+
+</script>
+
+  <script>
+    function modificarProducto(id, productoInput) {
+  let mutation = `
+    mutation ModificarProducto($modificarProductoId: ID!, $input: ProductoInput) {
+      modificarProducto(id: $modificarProductoId, input: $input) {
+        id
+        nombreproducto
+        autor
+        editorial
+        detalle
+        imagen
+      }
+    }
+  `;
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8091/graphql",
+    contentType: "application/json",
+    timeout: 15000,
+    data: JSON.stringify({
+      query: mutation,
+      variables: {
+        modificarProductoId: id,
+        input: productoInput
+      }
+    }),
+    success: function (response) {
+      console.log("el id es", id);
+      console.log('Response:', response);
+      alert("Se ha guardado satisfactoriamente los cambios");
+      $('#editModal2').modal('hide');
+      $('#editModal3').modal('hide');
+      getProductos();
+      // Puedes realizar acciones adicionales después de la modificación del producto
+    },
+    error: function (error) {
+      console.error("Error al actualizar producto:", error);
+    }
+  });
+}
+  </script>
+  <script>
+  function updateUsuario(id, usuarioInput) {
+    let mutation = `
+        mutation UpdateUsuario($updUsuarioId: ID!, $input: UsuarioInput) {
+            updUsuario(id: $updUsuarioId, input: $input) {
+                id
+                rut
+                pass
+                nombre
+                apellido1
+                apellido2
+                carrera
+                telefono
+                correo
+            }
+        }
+    `;
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                updUsuarioId: id,
+                input: usuarioInput
+            }
+        }),
+        success: function (response) {
+            console.log("el id es", id);
+            console.log('Response:', response);
+            alert("Se ha guardado sastifactoriamente los cambios")
+            getUsuarios();
+            $('#editModal').modal('hide');
+        },
+        error: function (error) {
+            console.log(id);
+            console.log("los inputs son:", usuarioInput);
+            console.error("Error al actualizar usuario:", error);
+        }
+    });
+} 
+</script>
+  <script>
+    function deleteUsuario(id) {
+      let mutation = `
+        mutation DeleteUsuario($delUsuarioId: ID!) {
+          delUsuario(id: $delUsuarioId) {
+            message
+          }
+        }
+      `;
+  
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+          query: mutation,
+          variables: {
+            delUsuarioId: id
+          }
+        }),
+        success: function(response) {
+          alert(response.data.delUsuario.message);
+          getUsuarios();
+        }
+      });
+    }
+  </script>
+  <script>
+    function getUsuarios() {
+      let query = `
+        query {
+          getUsuarios {
+            id
+            rut
+            pass
+            nombre
+            apellido1
+            apellido2
+            carrera
+            telefono
+            correo
+            perfil {
+              nombre
+            }
+          }
+        }
+      `;
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+          query: query,
+          variables: {}
+        }),
+        success: function (response) {
+          console.log(response);
+          let table = document.querySelector('#Tablausuario'); // Selección de la tabla
+  
+          // Limpieza de la tabla
+          while (table.firstChild) {
+            table.removeChild(table.firstChild);
+          }
+  
+          if (response.data.getUsuarios.length > 0) {
+            // Creación de la cabecera de la tabla
+            let thead = document.createElement('thead');
+            let trH = document.createElement('tr');
+            let headers = ["N", "ID", "Nombre", "Primer Apellido", "Segundo Apellido", "Rut", "Contraseña", "Carrera", "Telefono", "Correo", "Tipo de Usuario", "Acciones"];
+            
+            headers.forEach(headerText => {
+              let th = document.createElement('th');
+              th.appendChild(document.createTextNode(headerText));
+              trH.appendChild(th);
+            });
+  
+            thead.appendChild(trH);
+            table.appendChild(thead);
+  
+            // Iteración sobre los usuarios
+            response.data.getUsuarios.forEach((usuario, index) => {
+              let tr = document.createElement('tr');
+  
+              // Añadir celdas con los datos del usuario
+              let tdIndex = document.createElement('td');
+              tdIndex.appendChild(document.createTextNode(index + 1));
+              tr.appendChild(tdIndex);
+              
+              let tdId = document.createElement('td');
+              tdId.appendChild(document.createTextNode(usuario.id));
+              tr.appendChild(tdId);
+
+              let tdNombre = document.createElement('td');
+              tdNombre.appendChild(document.createTextNode(usuario.nombre));
+              tr.appendChild(tdNombre);
+  
+              let tdApellido1 = document.createElement('td');
+              tdApellido1.appendChild(document.createTextNode(usuario.apellido1));
+              tr.appendChild(tdApellido1);
+
+              let tdApellido2 = document.createElement('td');
+              tdApellido2.appendChild(document.createTextNode(usuario.apellido2));
+              tr.appendChild(tdApellido2);
+              
+              let tdRut = document.createElement('td');
+              tdRut.appendChild(document.createTextNode(usuario.rut));
+              tr.appendChild(tdRut);
+              
+              let tdContraseña = document.createElement('td');
+              tdContraseña.appendChild(document.createTextNode(usuario.pass));
+              tr.appendChild(tdContraseña);
+              
+              let tdCarrera = document.createElement('td');
+              tdCarrera.appendChild(document.createTextNode(usuario.carrera));
+              tr.appendChild(tdCarrera);
+
+              let tdTelefono = document.createElement('td');
+              tdTelefono.appendChild(document.createTextNode(usuario.telefono));
+              tr.appendChild(tdTelefono);
+
+              let tdCorreo = document.createElement('td');
+              tdCorreo.appendChild(document.createTextNode(usuario.correo));
+              tr.appendChild(tdCorreo);
+
+              let tdPerfil = document.createElement('td');
+              if (usuario.perfil) {
+                tdPerfil.appendChild(document.createTextNode(usuario.perfil.nombre));
+              } else {
+                tdPerfil.appendChild(document.createTextNode('Sin perfil'));
+              }
+              tr.appendChild(tdPerfil);
+              
+
+              // Repite este proceso para el resto de las columnas del usuario
+  
+              let tdAcciones = document.createElement('td');
+              let buttonEditar = document.createElement('button');
+              buttonEditar.className = 'btn btn-primary btn-sm';
+              buttonEditar.appendChild(document.createTextNode('Editar'));
+
+
+
+
+
+
+// Create modal content
+let modalContent = `
+  <div class="modal" tabindex="-1" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Usuario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-sm-1">
+                <!-- Placeholder for navigation buttons (Atras/Siguiente) -->
+                <button class="btn btn-success btn-sm">Atras</button>
+                <button class="btn btn-success btn-sm">Siguiente</button>
+              </div>
+              <div class="col-sm-3 shadow p-4">
+                <h5>Actualizar Usuario</h5>
+                <form action="/action_page.php">
+                  <div class="mb-3 mt-3">
+                    <label for="primernombre">Nombre:</label>
+                    <input type="text" class="form-control" id="primernombre" name="primernombre">
+                  </div>
+                  <div class="mb-3">
+                    <label for="PrimerApellido">Primer Apellido:</label>
+                    <input type="text" class="form-control" id="PrimerApellido" name="PrimerApellido">
+                  </div>
+                  <div class="mb-3">
+                    <label for="SegundoApellido">Segundo Apellido:</label>
+                    <input type="text" class="form-control" id="SegundoApellido" name="SegundoApellido">
+                  </div>
+                  <div class="mb-3">
+                    <label for="rut_id">Rut:</label>
+                    <input type="text" class="form-control" id="rut_id" name="rut_id">
+                  </div>
+                  <div class="mb-3">
+                    <label for="password_usuario">Contraseña:</label>
+                    <input type="password" class="form-control" id="password_usuario" name="password_usuario">
+                  </div>
+                  <div class="mb-3">
+                    <label for="carrera_usuario">Carrera:</label>
+                    <input type="text" class="form-control" id="carrera_usuario" name="carrera_usuario">
+                  </div>
+                  <div class="mb-3">
+                    <label for="telefono_id">Telefono:</label>
+                    <input type="text" class="form-control" id="telefono_id" name="telefono_id">
+                  </div>
+                  <div class="mb-3">
+                    <label for="correo_id">Correo:</label>
+                    <input type="email" class="form-control" id="correo_id" name="correo_id">
+                  </div>
+                  <div class="container mt-3">
+                    <div class="mb-3 mt-3">
+                      <label for="Perfil">Perfil:</label>
+                      <select id="Perfil" name="Perfil" class="form-select"></select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+
+
+              // Append modal content to the document body
+              document.body.insertAdjacentHTML('beforeend', modalContent);
+
+                            // Add event listener to the "Editar" button using querySelector
+                            buttonEditar.addEventListener('click', () => {
+                let editModal = new bootstrap.Modal(document.querySelector('#editModal'));
+
+                // Find the row data for the clicked "Editar" button
+                let rowData = buttonEditar.closest('tr').querySelectorAll('td');
+
+                // Fill the form fields with the corresponding data
+                document.getElementById('userId').value = rowData[1].textContent;
+                document.getElementById('primernombre').value = rowData[2].textContent;
+                document.getElementById('PrimerApellido').value = rowData[3].textContent;
+                document.getElementById('SegundoApellido').value = rowData[4].textContent;
+                document.getElementById('rut_id').value = rowData[5].textContent;
+                document.getElementById('password_usuario').value = rowData[6].textContent;
+                document.getElementById('carrera_usuario').value = rowData[7].textContent;
+                document.getElementById('telefono_id').value = rowData[8].textContent;
+                document.getElementById('correo_id').value = rowData[9].textContent;    
+                editModal.show();
+             
+                           
+              } );
+              
+              
+
+              // Append the "Editar" button to the table cell
+              tdAcciones.appendChild(buttonEditar);
+
+              // Add the table cell to your table using querySelector
+              table.appendChild(tdAcciones);
+              let buttonEliminar = document.createElement('button');
+                buttonEliminar.className = 'btn btn-danger btn-sm'; // Cambiado a btn-danger para resaltar el color rojo
+                buttonEliminar.appendChild(document.createTextNode('Eliminar'));
+                buttonEliminar.addEventListener('click', () => {
+                    // Lógica para la acción de eliminar
+                    const confirmacion = confirm('¿Seguro que deseas eliminar este usuario?');
+                    
+                    if (confirmacion) {
+                        // Lógica para eliminar el usuario
+                        console.log(`Eliminar usuario con ID: ${usuario.id}`);
+                        deleteUsuario(usuario.id);
+                    } else {
+                        // Lógica si se cancela la eliminación
+                        console.log('Eliminación cancelada');
+                    }
+                });
+                tdAcciones.appendChild(buttonEliminar);0
+
+                  
+              // Añadir la celda de acciones a la fila
+              tr.appendChild(tdAcciones);
+
+              // Añadir la fila a la tabla
+              table.appendChild(tr);
+            });
+          } else {
+            console.log("No se encontraron usuarios.");
+          }
+          let tablaExistente = document.getElementById('Tablausuario');
+            if (tablaExistente) {
+                tablaExistente.parentNode.replaceChild(nuevaTabla, tablaExistente);
+            } else {
+                // Si no hay tabla existente, simplemente agrega la nueva
+                document.body.appendChild(nuevaTabla);
+            }
+
+        }
+      });
+    }
+  </script>
+
+  <script>
+    function addUsuario() {
+        let rut = document.getElementById('rut_id1').value;
+        let pass = document.getElementById('password_usuario1').value;
+        let nombre = document.getElementById('primernombre1').value;
+        let apellido1 = document.getElementById('PrimerApellido1').value;
+        let apellido2 = document.getElementById('SegundoApellido1').value;
+        let carrera = document.getElementById('carrera_usuario1').value;
+        let telefono = document.getElementById('telefono_id1').value;
+        let correo = document.getElementById('correo_id1').value;
+
+        let perfilSeleccionado = document.getElementById('Perfil').value;
+        let mutation = `
+            mutation AddUsuario($input: UsuarioInput) {
+                addUsuario(input: $input) {
+                    id
+                    rut
+                    pass
+                    nombre
+                    apellido1
+                    apellido2
+                    carrera
+                    telefono
+                    correo
+                }
+            }
+        `;
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8091/graphql",
+            contentType: "application/json",
+            timeout: 15000,
+            data: JSON.stringify({
+                query: mutation,
+                variables: {
+                    input: {
+                        rut: rut,
+                        pass: pass,
+                        nombre: nombre,
+                        apellido1: apellido1,
+                        apellido2: apellido2,
+                        carrera: carrera,
+                        telefono: telefono,
+                        correo: correo,
+                        perfil: perfilSeleccionado, // Asumiendo que el campo es perfilId
+                    }
+                }
+            }),
+            success: function (response) {
+                alert("Se ha ingresado correcctamente "+ response.data.addUsuario.id);
+                getUsuarios();
+            }
+        });
+    }
+</script>
+  <script>
+    function getPerfiles() {
+      let query = `
+        query miQuery {
+          getPerfiles {
+            id
+            nombre
+          }
+        }
+      `;
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+          query: query,
+          variables: {}
+        }),
+        success: function (response) {
+          console.log(response);
+          let select = document.getElementById('Perfil');
+          response.data.getPerfiles.forEach((element) => {
+            const opt = document.createElement("option");
+            opt.value = element.id;
+            opt.text = element.nombre;
+            select.appendChild(opt);
+            console.log(element);
+          });
+        }
+      });
+    }
+  </script>
+  
+  <script>
+    function getSolicitudes() {
+      let query = `
+        query GetSolicitudes {
+          getSolicitudes {
+            id
+            estado
+            fechaDevuelta
+            ticket {
+              producto {
+                nombreproducto
+                categoria
+                imagen
+              }
+              usuario {
+                nombre
+                rut
+              }
+            }
+          }
+        }
+      `;
+  
+      $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+          query: query,
+          variables: {}
+        }),
+        success: function (response) {
+          console.log(response);
+          let tablaSolicitud = document.querySelector('#tablaSolicitud'); // Selección de la tabla
+  
+          // Limpieza de la tabla
+          while (tablaSolicitud.firstChild) {
+            tablaSolicitud.removeChild(tablaSolicitud.firstChild);
+          }
+  
+          if (response.data.getSolicitudes.length > 0) {
+            // Creación de la cabecera de la tabla
+            let thead = document.createElement('thead');
+            let trH = document.createElement('tr');
+            let headers = ["N", "ID", "Estado", "Fecha Devuelta", "Producto", "Imagen", "Categoría", "Usuario", "rut", "Acciones"];
+  
+            headers.forEach(headerText => {
+              let th = document.createElement('th');
+              th.appendChild(document.createTextNode(headerText));
+              trH.appendChild(th);
+            });
+  
+            thead.appendChild(trH);
+            tablaSolicitud.appendChild(thead);
+  
+            // Iteración sobre las solicitudes
+            response.data.getSolicitudes.forEach((solicitud, index) => {
+              let tr = document.createElement('tr');
+  
+              // Añadir celdas con los datos de la solicitud
+              let tdIndex = document.createElement('td');
+              tdIndex.appendChild(document.createTextNode(index + 1));
+              tr.appendChild(tdIndex);
+  
+              let tdId = document.createElement('td');
+              tdId.appendChild(document.createTextNode(solicitud.id));
+              tr.appendChild(tdId);
+  
+              let tdEstado = document.createElement('td');
+              tdEstado.appendChild(document.createTextNode(solicitud.estado));
+              tr.appendChild(tdEstado);
+
+              let tdFecha = document.createElement('td');
+             
+              if  (solicitud.estado === "pendiente") {
+                  tdFecha.appendChild(document.createTextNode("La solicitud esta pendiente"));
+                  tr.style.backgroundColor = "yellow";
+                  
+              }
+              else  if (solicitud.fechaDevuelta === null){
+                tdFecha.appendChild(document.createTextNode("No se ha devuelto"));
+                tr.style.backgroundColor = "red";
+              }
+              else {
+                  let timestamp = Number(solicitud.fechaDevuelta);
+                  let fecha = new Date(timestamp);
+                  let dia = fecha.getDate();
+                  let mes = fecha.getMonth() + 1; // Los meses en JavaScript empiezan desde 0
+                  let ano = fecha.getFullYear();
+                  tdFecha.appendChild(document.createTextNode(`${dia}/${mes}/${ano}`));
+              }
+              tr.appendChild(tdFecha);
+  
+              let tdProducto = document.createElement('td');
+              tdProducto.appendChild(document.createTextNode(solicitud.ticket.producto.nombreproducto));
+              tr.appendChild(tdProducto);
+               let tdImagen = document.createElement('td');
+              let img = document.createElement('img');
+              img.src = "http://localhost/dbstudystock/" + solicitud.ticket.producto.imagen; // Ajusta la URL base según tu configuración
+              img.alt = solicitud.ticket.producto.imagen;
+              img.style.maxWidth = '70px'; // Cambia el valor según tus necesidades
+              img.style.height = 'auto'; // Para mantener la proporción original
+              tdImagen.appendChild(img);
+              tr.appendChild(tdImagen);
+  
+              let tdCategoria = document.createElement('td');
+              tdCategoria.appendChild(document.createTextNode(solicitud.ticket.producto.categoria));
+              tr.appendChild(tdCategoria);
+  
+              let tdUsuario = document.createElement('td');
+              tdUsuario.appendChild(document.createTextNode(solicitud.ticket.usuario.nombre));
+              tr.appendChild(tdUsuario);
+
+              let tdrut = document.createElement('td');
+              tdrut.appendChild(document.createTextNode(solicitud.ticket.usuario.rut));
+              tr.appendChild(tdrut);
+             
+  
+              // Puedes añadir más celdas según la estructura de tu solicitud
+  
+              let tdAcciones = document.createElement('td');
+                        let buttonAceptar = document.createElement('button');
+                        buttonAceptar.className = 'btn btn-primary btn-sm';
+                        buttonAceptar.appendChild(document.createTextNode('Aceptar'));
+
+                        // Agregar event listener al botón "Aceptar"
+                        buttonAceptar.addEventListener('click', function () {
+                            // Llamar a la mutación AprobarSolicitud
+                            aprobarSolicitud(solicitud.id);
+                            
+                        });
+
+                        let buttonRechazar = document.createElement('button');
+                        buttonRechazar.className = 'btn btn-danger btn-sm';
+                        buttonRechazar.appendChild(document.createTextNode('Borrar'));
+                        buttonRechazar.addEventListener('click', function() {
+                      
+                        rechazarSolicitud(solicitud.id);
+                    });
+
+                        tdAcciones.appendChild(buttonAceptar);
+                        tdAcciones.appendChild(buttonRechazar);
+                        tr.appendChild(tdAcciones);
+
+                        // Agregar la fila a la tabla
+                        tablaSolicitud.appendChild(tr);
+            });
+          }
+        },
+        error: function (error) {
+          console.error(error);
+          alert('Error al obtener las solicitudes');
+        }
+      });
+    }
+</script>
+<script>
+  function getPrestamos() {
+      let query = `
+          query GetPrestamos {
+              getPrestamos {
+                  id
+                  solicitud {
+                      id
+                      ticket {
+                          fecha
+                          usuario {
+                              nombre
+                              rut
+                          }
+                          producto {
+                              nombreproducto
+                              imagen
+                          }
+                      }
+                  }
+              }
+          }
+      `;
+
+      $.ajax({
+          type: "POST",
+          url: "http://localhost:8091/graphql",
+          contentType: "application/json",
+          timeout: 15000,
+          data: JSON.stringify({
+              query: query,
+              variables: {}
+          }),
+          success: function (response) {
+              console.log(response);
+              let tablaPrestamos = document.querySelector('#tablaPrestamos'); // Selección de la tabla
+
+              // Limpieza de la tabla
+              while (tablaPrestamos.firstChild) {
+                  tablaPrestamos.removeChild(tablaPrestamos.firstChild);
+              }
+
+              if (response.data.getPrestamos.length > 0) {
+                  // Creación de la cabecera de la tabla
+                  let thead = document.createElement('thead');
+                  let trH = document.createElement('tr');
+                  let headers = ["N", "ID prestamo", "ID solicitud", "Fecha", "Usuario", "Producto", "Imagen", "Acciones"];
+
+                  headers.forEach(headerText => {
+                      let th = document.createElement('th');
+                      th.appendChild(document.createTextNode(headerText));
+                      trH.appendChild(th);
+                  });
+
+                  thead.appendChild(trH);
+                  tablaPrestamos.appendChild(thead);
+
+                  // Iteración sobre los préstamos
+                  response.data.getPrestamos.forEach((prestamo, index) => {
+                      let tr = document.createElement('tr');
+
+                      // Añadir celdas con los datos del préstamo
+                      let tdIndex = document.createElement('td');
+                      tdIndex.appendChild(document.createTextNode(index + 1));
+                      tr.appendChild(tdIndex);
+                      let tdId = document.createElement('td');
+                      tdId.appendChild(document.createTextNode(prestamo.id));
+                      tr.appendChild(tdId);
+                      let tdIds = document.createElement('td');
+                      tdIds.appendChild(document.createTextNode(prestamo.solicitud.id));
+                      tr.appendChild(tdIds);
+
+                      let tdFecha = document.createElement('td');
+                      let timestamp = Number(prestamo.solicitud.ticket.fecha);
+                      let fecha = new Date(timestamp);
+                      let dia = fecha.getDate();
+                      let mes = fecha.getMonth() + 1; // Los meses en JavaScript empiezan desde 0
+                      let ano = fecha.getFullYear();
+                      tdFecha.appendChild(document.createTextNode(`${dia}/${mes}/${ano}`));
+                      tr.appendChild(tdFecha);
+
+                      let tdUsuario = document.createElement('td');
+                      tdUsuario.appendChild(document.createTextNode(`${prestamo.solicitud.ticket.usuario.nombre} - ${prestamo.solicitud.ticket.usuario.rut}`));
+                      tr.appendChild(tdUsuario);
+
+                      let tdProducto = document.createElement('td');
+                      tdProducto.appendChild(document.createTextNode(prestamo.solicitud.ticket.producto.nombreproducto));
+                      tr.appendChild(tdProducto);
+
+                      let tdImagen = document.createElement('td');
+                      let img = document.createElement('img');
+                      img.src = "http://localhost/dbstudystock/" + prestamo.solicitud.ticket.producto.imagen;
+                      img.alt = prestamo.solicitud.ticket.producto.imagen;
+                      img.style.maxWidth = '70px';
+                      img.style.height = 'auto';
+                      tdImagen.appendChild(img);
+                      tr.appendChild(tdImagen);
+
+                      // Puedes añadir más celdas según la estructura de tu solicitud
+
+                      let tdAcciones = document.createElement('td');
+                    
+
+
+                      let buttonDevolver = document.createElement('button');
+                      buttonDevolver.className = 'btn btn-danger btn-sm';
+                      buttonDevolver.appendChild(document.createTextNode('Devolver'));
+                      buttonDevolver.addEventListener('click', function () {
+                      // Llamar a la función devolverPrestamo con el ID correspondiente
+                      devolverPrestamo(prestamo.id);
+                      getPrestamos(); // Asegúrate de tener el ID del préstamo disponible
+                    });
+              
+
+                  
+                      tdAcciones.appendChild(buttonDevolver);
+                      tr.appendChild(tdAcciones);
+
+                      // Agregar la fila a la tabla
+                      tablaPrestamos.appendChild(tr);
+                  });
+              }
+          },
+          error: function (error) {
+              console.error(error);
+              alert('Error al obtener los préstamos');
+          }
+      });let tablaExistente = document.getElementById('tablaPrestamos');
+            if (tablaExistente) {
+                tablaExistente.parentNode.replaceChild(nuevaTabla, tablaExistente);
+            } else {
+                // Si no hay tabla existente, simplemente agrega la nueva
+                document.body.appendChild(nuevaTabla);
+            }
+  }
+</script>
+<script>
+  function devolverPrestamo(id) {
+  let mutation = `
+    mutation RegistrarDevolucion($registrarDevolucionId: ID!) {
+      registrarDevolucion(id: $registrarDevolucionId) {
+        message
+      }
+    }
+  `;
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8091/graphql",
+    contentType: "application/json",
+    timeout: 15000,
+    data: JSON.stringify({
+      query: mutation,
+      variables: {
+        registrarDevolucionId: id
+      }
+    }),
+    success: function (response) {
+      alert(response.data.registrarDevolucion.message);
+      getSolicitudes();
+    },
+    error: function (error) {
+      console.error(error);
+      alert('Error al registrar la devolución');
+    }
+  });
+}
+</script>
+<script>
+  function rechazarSolicitud(id) {
+    // Mutación GraphQL para rechazar la solicitud
+    let mutation = `
+        mutation DelSolicitud($delSolicitudId: ID!) {
+            delSolicitudes(id: $delSolicitudId) {
+                message
+            }
+        }
+    `;
+
+    // Realiza la solicitud AJAX
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: mutation,
+            variables: {
+                delSolicitudId: id
+            }
+        }),
+        success: function (response) {
+            console.log(response);
+            alert(response.data.delSolicitudes.message);
+            // Actualiza la lista de solicitudes después de rechazar una
+            getSolicitudes();
+        },
+        error: function (error) {
+            console.error(error);
+            alert('Error al borrar la solicitud');
+        }
+    });
+}
+function aprobarSolicitud(id) {
+    // Obtener el estado actual de la solicitud
+    let query = `
+        query GetSolicitud($solicitudId: ID!) {
+            getSolicitud(id: $solicitudId) {
+                estado
+            }
+        }
+    `;
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8091/graphql",
+        contentType: "application/json",
+        timeout: 15000,
+        data: JSON.stringify({
+            query: query,
+            variables: {
+                solicitudId: id
+            }
+        }),
+        success: function (response) {
+            const estadoActual = response.data.getSolicitud.estado;
+
+            // Verificar si el estado es "Devuelto" o "Prestada"
+            if (estadoActual === "Devuelto") {
+                alert('Este producto ya fue devuelto y no se puede aprobar de nuevo.');
+            } else if (estadoActual === "prestada") {
+                alert('No se puede aprobar la solicitud porque ya está prestada.');
+            } else {
+                // Continuar con la lógica de aprobación
+                let mutation = `
+                    mutation AprobarSolicitud($input: AprobarSolicitudInput, $aprobarSolicitudId: ID!) {
+                        aprobarSolicitud(input: $input, id: $aprobarSolicitudId) {
+                            id
+                            estado
+                            fechaDevuelta
+                        }
+                    }
+                `;
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8091/graphql",
+                    contentType: "application/json",
+                    timeout: 15000,
+                    data: JSON.stringify({
+                        query: mutation,
+                        variables: {
+                            aprobarSolicitudId: id
+                        }
+                    }),
+                    success: function (response) {
+                        console.log(response);
+                        // Puedes agregar lógica adicional después de la aprobación
+                        alert('Solicitud aprobada correctamente');
+                        // Llamar a getSolicitudes para actualizar la tabla
+                        getSolicitudes();
+                        getPrestamos();
+                    },
+                    error: function (error) {
+                        console.error(error);
+                        alert('Error al aprobar la solicitud');
+                    }
+                });
+            }
+        },
+        error: function (error) {
+            console.error(error);
+            alert('Error al obtener el estado de la solicitud');
+        }
+    });
+}
+</script>
+</script>
+
+
+
+
+
+
+
+
+
+  
+<div class="container-fluid arribaDeDashboard">
+  <div class="row">
+        <div class="col-sm-9 p-2">
+          <h2 class="title-info"></h2>
+      </div>
+
+      <div class="col-sm-2 p-2">
+          <h5 class="user-info"></h5>
+      </div>
+
+      <div class="col-sm-1 p-2">
+        <button type="button" class="btn btn-outline-danger">Cerrar Sesión</button>
+      </div>
+
+      <style>
+        .arribaDeDashboard {
+          background-color: #f0efefc4; /* Puedes ajustar el color gris según tus preferencias */
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+
+        .title-info {
+            text-align: left;
+        }
+
+        @media (max-width: 600px) {
+            .user-info, .title-info {
+                text-align: left;
+            }
+        }
+    </style>
+
+      <script>
+        window.onload = function () {
+            // Recuperar la información del usuario del almacenamiento local
+            var rut = localStorage.getItem('rut');
+            var perfil = localStorage.getItem('perfil');
+            var permisos = localStorage.getItem('permisos');
+
+            // Actualizar el contenido de la página con la información del usuario
+            var user = document.querySelector('.user-info');
+            var title = document.querySelector('.title-info');
+            user.innerHTML = 'Rut: ' + rut + ' Perfil:' + perfil;
+            title.innerHTML = '🔧 Panel de Control - StudyStock';
+
+            // Agregar una clase a cada elemento
+            user.setAttribute('class', 'user-info');
+            title.setAttribute('class', 'title-info');
+        };
+
+        // Obtener el botón "Cerrar Sesión"
+        var cerrarSesionBtn = document.querySelector('.btn-outline-danger');
+
+        // Agregar un evento de clic al botón
+        cerrarSesionBtn.addEventListener('click', function () {
+            // Redirigir a la página que desees
+            window.location.href = 'index.html';
+        });
+    </script>
+
+  </div>
+</div>
+
+
+
+<ul class="nav nav-tabs navbarDashboard" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" data-bs-toggle="tab" href="#home">Inicio</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-bs-toggle="tab" href="#menu1">Generar Reporte</a>
+  </li>
+  <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Administrar</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" data-bs-toggle="tab" href="#menu2" data-permiso="permiso-administrativa">Administrar Usuarios</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="tab" href="#menu5" data-permiso="permiso-administrativa">Administrar Perfiles</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="tab" href="#menu3" data-permiso="permiso-inventario">Administrar Productos</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="tab" href="#menu4" data-permiso="permiso-solicitudes">Administrar Solicitudes</a></li>
+        <li><a class="dropdown-item" data-bs-toggle="tab" href="#menu6" data-permiso="permiso-prestamos">Administrar Prestamos</a></li>
+      </ul>
+    </li>
+</ul>
+
+  
+  <style>
+    .navbarDashboard {
+      background-color: #f0efefc4; /* Puedes cambiar este color gris según tus preferencias */
+    }
+  </style>
+
+
+
+<!-- Agrega este script después de tus otros scripts -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Obtén todos los elementos del menú que tienen el atributo 'data-permiso'
+    var elementosMenu = document.querySelectorAll('[data-permiso]');
+
+    // Obtiene los permisos del almacenamiento local
+    var permisosUsuario = localStorage.getItem('permisos');
+    permisosUsuario = permisosUsuario ? permisosUsuario.split(',') : [];
+
+    // Itera sobre los elementos del menú
+    elementosMenu.forEach(function(elemento) {
+      // Obtiene el permiso asociado con el menú
+      var permisoMenu = elemento.getAttribute('data-permiso');
+
+      // Verifica si el usuario tiene el permiso correspondiente
+      if (permisosUsuario.includes(permisoMenu)) {
+        // Si tiene el permiso, muestra el menú
+        elemento.style.display = 'block';
+      } else {
+        // Si no tiene el permiso, oculta el menú
+        elemento.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Tab panes -->
+<div class="tab-content">
+    <div id="home" class="container-fluid tab-pane active"><br>
+      <body>
+        <div class="tab-content">
+          <div id="home" class="container-fluid tab-pane active"><br>
+            <div class="col-sm-2 p-1">
+              <h3>Herramientas</h3>
+            </div> 
+            <div class="col-sm-2 p-1">
+              <a href="index.html" class="btn btn-outline-info">Visualización Web</a>
+            </div>  
+        
+            <div class="col-sm-2 p-1">
+              <button id="previewButton" class="btn btn-outline-info" onclick="togglePreview()">Visualización Previa</button>
+            </div>
+
+            <div id="previewContainer" style="display:none;">
+              <!-- Contenido de la visualización previa -->
+              <iframe id="previewFrame" src="" width="100%" height="600px" frameborder="0"></iframe>
+            </div>
+          </div>
+        </div>
+        
+        <script>
+          function togglePreview() {
+            var previewContainer = document.getElementById("previewContainer");
+            var previewFrame = document.getElementById("previewFrame");
+            var previewButton = document.getElementById("previewButton");
+        
+            if (previewContainer.style.display === "none") {
+              previewContainer.style.display = "block";
+              previewFrame.src = "https://pagina-web.lucianoaguilar.repl.co";
+              previewButton.innerText = "Cerrar Visualización";
+            } else {
+              previewContainer.style.display = "none";
+              previewFrame.src = "";
+              previewButton.innerText = "Visualización Previa";
+            }
+          }
+        
+          function closePreview() {
+            var previewContainer = document.getElementById("previewContainer");
+            var previewFrame = document.getElementById("previewFrame");
+            var previewButton = document.getElementById("previewButton");
+        
+            previewContainer.style.display = "none";
+            previewFrame.src = "";
+            previewButton.innerText = "Visualización Previa";
+          }
+        </script>        
+      </body>
+    </div>
+
+
+      <div id="menu1" class="container-fluid tab-pane fade"><br>
+        <div class = "row">
+          <h3>Generar Reporte</h3>
+          <div class="col-sm-4 shadow p-4">
+              <h5>Ingresa Aqui el Reporte</h5>
+              <form action="/action_page.php">
+              <div class="mb-3 mt-3">
+                  <label for="inrut">Rut:</label>
+                  <input type="inrut" class="form-control" id="inrut" placeholder="Ingresa un Rut" name="inrut">
+              </div>
+              <div class="mb-3">
+                  <label for="comment">Descripcion:</label>
+                  <textarea class="form-control" rows="5" id="comment" name="text"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Enviar</button>
+              </form>
+          </div>
+      </div>
+    </div>
+
+    
+    <div id="menu2" class="container-fluid tab-pane fade"><br>
+      <h3>Administrar Usuarios</h3>
+      <div class = "row">
+        <h3></h3>
+          <div class="col-sm-12 shadow p-4">
+            <h5>Lista de Usuarios</h5>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="pepito123..." id="searchInput">
+                <button class="btn btn-outline-secondary" type="button" id="searchButton">Buscar</button>
+            </div>
+            <div class="table-responsive">
+                <table id= "Tablausuario" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>N</th>
+                            <th>Nombre</th>
+                            <th>Primer Apellido</th>
+                            <th>Segundo Apellido</th>
+                            <th>Rut</th>
+                            <th>Contraseña</th>
+                            <th>Carrera</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
+                            <th>Tipo de Usuario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <!-- Agrega aquí el contenido de la tabla según sea necesario -->
+                </table>
+            </div>
+            <button class="btn btn-success btn-sm">Atras</button>
+            <button class="btn btn-success btn-sm">Siguiente</button>
+        </div>
+      
+
+            <script>
+                $(document).ready(function () {
+                    // Función para manejar la búsqueda
+                    $("#searchButton").click(function () {
+                        var searchText = $("#searchInput").val().toLowerCase();
+    
+                        // Filtrar la tabla según el texto de búsqueda
+                        $("table tr").filter(function () {
+                            $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+                        });
+                    });
+                });
+            </script>
+        
+            <div class="modal" tabindex="-1" id="editModal">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Editar Usuario</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="container-fluid">
+                              <div class="row">
+                                  <div class="col-sm-15 shadow p-4">
+                                      <h5>Actualizar Usuario</h5>
+                                      <form action="/action_page.php" id="editForm">
+                                          <div class="mb-3">
+                                              <label for="userId">ID:</label>
+                                              <input type="text" class="form-control" id="userId" name="userId" readonly>
+                                          </div>
+                                          <div class="mb-3 mt-3">
+                                              <label for="primernombre">Nombre:</label>
+                                              <input type="text" class="form-control" id="primernombre" name="primernombre">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="PrimerApellido">Primer Apellido:</label>
+                                              <input type="text" class="form-control" id="PrimerApellido" name="PrimerApellido">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="SegundoApellido">Segundo Apellido:</label>
+                                              <input type="text" class="form-control" id="SegundoApellido" name="SegundoApellido">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="rut_id">Rut:</label>
+                                              <input type="text" class="form-control" id="rut_id" name="rut_id">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="password_usuario">Contraseña:</label>
+                                              <input type="password" class="form-control" id="password_usuario" name="password_usuario">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="carrera_usuario">Carrera:</label>
+                                              <input type="text" class="form-control" id="carrera_usuario" name="carrera_usuario">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="telefono_id">Telefono:</label>
+                                              <input type="text" class="form-control" id="telefono_id" name="telefono_id">
+                                          </div>
+                                          <div class="mb-3">
+                                              <label for="correo_id">Correo:</label>
+                                              <input type="email" class="form-control" id="correo_id" name="correo_id">
+                                          </div>
+
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary" id="guardarCambiosBtn" onclick="submitForm()">Guardar cambios</button>
+                                        </div>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm-3 shadow p-4">
+                <h5>Añadir Usuario</h5>
+                <form action="/action_page.php">
+                <div class="mb-3 mt-3">
+                    <label for="primernombre1">Nombre:</label>
+                    <input type="primernombre" class="form-control" id="primernombre1" placeholder="Ingresa un Nombre" name="primernombre1">
+                </div>
+                <div class="mb-3">
+                    <label for="PrimerApellido1">Primer Apellido:</label>
+                    <input type="PrimerApellido" class="form-control" id="PrimerApellido1" placeholder="Ingresa el Primer Apellido" name="PrimerApellido1">
+                </div>
+
+                <div class="mb-3">
+                    <label for="SegundoApellido1">Segundo Apellido:</label>
+                    <input type="SegundoApellido" class="form-control" id="SegundoApellido1" placeholder="Ingresa el Segundo Apellido" name="SegundoApellido1">
+                </div>
+
+                <div class="mb-3">
+                    <label for="rut_id1">Rut:</label>
+                    <input type="rut_id1" class="form-control" id="rut_id1" placeholder="Ingresa el Rut" name="rut_id1">
+                </div>
+
+                <div class="mb-3">
+                      <label for="password_usuario1">Contraseña:</label>
+                      <input type="password_usuario1" class="form-control" id="password_usuario1" placeholder="Ingresa la Contraseña" name="password_usuario1">
+                </div>
+
+                <div class="mb-3">
+                      <label for="carrera_usuario1">Carrera:</label>
+                      <input type="carrera_usuario1" class="form-control" id="carrera_usuario1" placeholder="Ingresa la Carrera" name="carrera_usuario1">
+                </div>
+
+                <div class="mb-3">
+                      <label for="telefono_id1">Telefono:</label>
+                      <input type="telefono_id1" class="form-control" id="telefono_id1" placeholder="Ingresa el Telefono" name="telefono_id1">
+                </div>
+
+                <div class="mb-3">
+                      <label for="correo_id1">Correo:</label>
+                      <input type="correo_id1" class="form-control" id="correo_id1" placeholder="Ingresa el Correo" name="correo_id1">
+                </div>
+
+                <div class="container mt-3">
+                  <form action="/action_page.php">
+                      <div class="mb-3 mt-3">
+                          <label for="Perfil">Perfil:</label>
+                          <select id="Perfil" name="Perfil" class="form-select">
+                          </select>
+                      </div>
+                  </form>
+              </div>
+              <button type="button" class="btn btn-primary" onclick="addUsuario()">Ingresar</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal fade" id="editarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="editarUsuarioModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editarUsuarioModalLabel">Editar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <!-- Formulario para editar usuario -->
+                <form id="editarUsuarioForm">
+                  <!-- Campos del formulario -->
+                  <div class="form-group">
+                    <label for="editarNombre">Nombre:</label>
+                    <input type="text" class="form-control" id="editarNombre" name="editarNombre">
+                  </div>
+                  <!-- Agrega los demás campos según sea necesario -->
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary">Guardar cambios</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+
+    
+    <script>
+      getPerfiles();
+      getUsuarios();
+      getSolicitudes();
+    </script>
+
+
+
+
+
+    <script>
+      function darDeBajaProducto(id) {
+  let mutation = `
+    mutation DarDeBajaProducto($darDeBajaProductoId: ID!) {
+      darDeBajaProducto(id: $darDeBajaProductoId) {
+        message
+      }
+    }
+  `;
+
+  $.ajax({
+    type: "POST",
+    url: "http://localhost:8091/graphql",
+    contentType: "application/json",
+    timeout: 15000,
+    data: JSON.stringify({
+      query: mutation,
+      variables: {
+        darDeBajaProductoId: id
+      }
+    }),
+    success: function(response) {
+      alert(response.data.darDeBajaProducto.message);
+      getProductos();
+    }
+  });
+}
+
+    </script>
+    <script>
+      function getProductos() {
+        let query = `
+          query {
+            getProductos {
+              id
+              nombreproducto
+              categoria
+              autor
+              editorial
+              detalle
+              imagen
+            }
+          }
+        `;
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:8091/graphql",
+          contentType: "application/json",
+          timeout: 15000,
+          data: JSON.stringify({
+            query: query,
+            variables: {}
+          }),
+          success: function (response) {
+            console.log(response);
+            let table = document.querySelector('#nuevaTablaId');
+      
+            // Limpieza de la tabla
+            while (table.firstChild) {
+              table.removeChild(table.firstChild);
+            }
+      
+            if (response.data.getProductos.length > 0) {
+              // Creación de la cabecera de la tabla
+              let thead = document.createElement('thead');
+              let trH = document.createElement('tr');
+              let headers = ["N", "ID", "Nombre", "Categoría", "Autor", "Editorial", "Detalle", "Imagen", "Acciones"];
+              
+              headers.forEach(headerText => {
+                let th = document.createElement('th');
+                th.appendChild(document.createTextNode(headerText));
+                trH.appendChild(th);
+              });
+      
+              thead.appendChild(trH);
+              table.appendChild(thead);
+      
+              // Iteración sobre los productos
+              response.data.getProductos.forEach((producto, index) => {
+                let tr = document.createElement('tr');
+      
+                // Añadir celdas con los datos del producto
+                let tdIndex = document.createElement('td');
+                tdIndex.appendChild(document.createTextNode(index + 1));
+                tr.appendChild(tdIndex);
+                
+                let tdId = document.createElement('td');
+                tdId.appendChild(document.createTextNode(producto.id));
+                tr.appendChild(tdId);
+    
+                let tdNombre = document.createElement('td');
+                tdNombre.appendChild(document.createTextNode(producto.nombreproducto));
+                tr.appendChild(tdNombre);
+      
+                let tdCategoria = document.createElement('td');
+                tdCategoria.appendChild(document.createTextNode(producto.categoria));
+                tr.appendChild(tdCategoria);
+    
+                let tdAutor = document.createElement('td');
+                tdAutor.appendChild(document.createTextNode(producto.autor));
+                tr.appendChild(tdAutor);
+    
+                let tdEditorial = document.createElement('td');
+                tdEditorial.appendChild(document.createTextNode(producto.editorial));
+                tr.appendChild(tdEditorial);
+                
+                let tdDetalle = document.createElement('td');
+                tdDetalle.appendChild(document.createTextNode(producto.detalle));
+                tr.appendChild(tdDetalle);
+                
+                let tdImagen = document.createElement('td');
+                let img = document.createElement('img');
+                img.src = "http://localhost/dbstudystock/" + producto.imagen; // Ajusta la URL base según tu configuración
+                img.alt = producto.imagen;
+                img.style.maxWidth = '70px'; // Cambia el valor según tus necesidades
+                img.style.height = 'auto'; // Para mantener la proporción original
+                tdImagen.appendChild(img);
+                tr.appendChild(tdImagen);
+      
+                // Crear botones de acciones
+                let tdAcciones = document.createElement('td');
+                let buttonEditar = document.createElement('button');
+                buttonEditar.className = 'btn btn-primary btn-sm';
+                buttonEditar.appendChild(document.createTextNode('Editar'));
+                buttonEditar.addEventListener('click', () => {
+                // Find the row data for the clicked "Editar" button
+                let rowData = buttonEditar.closest('tr').querySelectorAll('td');
+
+                // Check the category of the product
+                let categoriaProducto = rowData[3].textContent; // Asegúrate de que este índice sea correcto para la categoría
+
+                console.log(categoriaProducto);
+                let modalId = categoriaProducto === 'Libros' ? '#editModal3' : '#editModal2';
+                let editModal = new bootstrap.Modal(document.querySelector(modalId));
+
+                // Fill the form fields with the corresponding data
+                document.getElementById('ProductoId').value = rowData[1].textContent;
+                document.getElementById('ProductoId2').value = rowData[1].textContent;
+                document.getElementById('nombreproducto').value = rowData[2].textContent;
+                document.getElementById('nombreproducto2').value = rowData[2].textContent;
+                document.getElementById('autor').value = rowData[4].textContent;
+                document.getElementById('editorial').value = rowData[5].textContent;
+                document.getElementById('detalles').value = rowData[6].textContent;
+                document.getElementById('detalles2').value = rowData[6].textContent;
+
+                // Get the source of the image from the current row
+                let imgSrc = rowData[7].querySelector('img').src;
+                let imgSrc2 = rowData[7].querySelector('img').src;    
+                // Display the image in the modal
+                let previewImg = document.getElementById('archivoPreview');
+                let previewImg2 = document.getElementById('archivoPreview2');
+                previewImg.src = imgSrc;  
+                previewImg2.src= imgSrc2;  
+
+                // Show the modal
+                editModal.show();
+            });
+    
+                let buttonEliminar = document.createElement('button');
+                buttonEliminar.className = 'btn btn-danger btn-sm';
+                buttonEliminar.appendChild(document.createTextNode('Eliminar'));
+                buttonEliminar.addEventListener('click', () => {
+                  // Lógica para eliminar el producto
+                  const confirmacion = confirm('¿Seguro que deseas eliminar este producto?');
+                  
+                  if (confirmacion) {
+                    // Lógica para eliminar el producto
+                    console.log(`Eliminar producto con ID: ${producto.id}`);
+                    darDeBajaProducto(producto.id);
+                  } else {
+                    console.log('Eliminación cancelada');
+                  }
+                });
+                
+                // Agregar botones a la celda de acciones
+                tdAcciones.appendChild(buttonEditar);
+                tdAcciones.appendChild(buttonEliminar);
+      
+                // Añadir la celda de acciones a la fila
+                tr.appendChild(tdAcciones);
+      
+                // Añadir la fila a la tabla
+                table.appendChild(tr);
+              });
+            } else {
+              console.log("No se encontraron productos.");
+            }
+          }
+        });let tablaExistente = document.getElementById('nuevaTablaId');
+            if (tablaExistente) {
+                tablaExistente.parentNode.replaceChild(nuevaTabla, tablaExistente);
+            } else {
+                // Si no hay tabla existente, simplemente agrega la nueva
+                document.body.appendChild(nuevaTabla);
+            }
+      }
+    </script>
+    <script>
+      getProductos();
+    </script>
+
+
+<div id="menu3" class="container-fluid tab-pane fade"><br>
+  <h3>Administrar Productos</h3>
+  <div class="row">
+    <div class="col-sm-10 shadow p-4">
+      <h5>Lista de Productos</h5>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Buscar producto..." id="searchInputp">
+        <button class="btn btn-outline-secondary" type="button" id="searchButtonp">Buscar</button>
+      </div>
+      <div class="table-responsive">
+        <table id="nuevaTablaId" class="table table-hover">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>nombreproducto</th>
+              <th>categoria</th>
+              <th>autor</th>
+              <th>Rut</th>
+              <th>editorial</th>
+              <th>detalle</th>
+              <th>Imagen</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <button class="btn btn-success btn-sm">Atras</button>
+      <button class="btn btn-success btn-sm">Siguiente</button>
+    </div>
+
+        <div class="modal" tabindex="-1" id="editModal2">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Editar Productos</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-sm-15 shadow p-4">
+                                  <h5>Actualizar Producto</h5>
+                                  <form id="editForm2">
+                                    <div class="mb-3">
+                                        <label for="ProductoId">ID:</label>
+                                        <input type="text" class="form-control" id="ProductoId" name="ProductoId" readonly>
+                                    </div>
+                                    <div class="mb-3 mt-3">
+                                        <label for="nombreproducto">Nombre del Producto:</label>
+                                        <input type="text" class="form-control" id="nombreproducto" name="nombreproducto">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="detalles">Detalle:</label>
+                                        <input type="text" class="form-control" id="detalles" name="detalles">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="archivo">Imagen:</label>
+                                        <img class="form-control" id="archivoPreview" style="max-width: 100%; height: auto;">
+                                        <input type="file" class="form-control" id="archivo" name="archivo" accept="image/*">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary" id="guardarCambiosBtn2" onclick="submitForm2()">Guardar cambios</button>
+                                    </div>
+                                </form>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="modal" tabindex="-1" id="editModal3">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Productos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-15 shadow p-4">
+                                <h5>Actualizar Producto</h5>
+                                <form id="editForm3">
+                                  <div class="mb-3">
+                                      <label for="ProductoId2">ID:</label>
+                                      <input type="text" class="form-control" id="ProductoId2" name="ProductoId2" readonly>
+                                  </div>
+                                  <div class="mb-3 mt-3">
+                                      <label for="nombreproducto2">Nombre del Producto:</label>
+                                      <input type="text" class="form-control" id="nombreproducto2" name="nombreproducto2">
+                                  </div>
+                                  <div class="mb-3 mt-3">
+                                    <label for="autor">Autor del libro:</label>
+                                    <input type="text" class="form-control" id="autor" name="autor">
+                                  </div>
+                                  <div class="mb-3 mt-3">
+                                    <label for="editorial">editorial del libro:</label>
+                                    <input type="text" class="form-control" id="editorial" name="editorial">
+                                  </div>
+
+                                  <div class="mb-3">
+                                      <label for="detalles2">Detalle:</label>
+                                      <input type="text" class="form-control" id="detalles2" name="detalles2">
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="archivo2">Imagen:</label>
+                                      <img class="form-control" id="archivoPreview2" style="max-width: 100%; height: auto;">
+                                      <input type="file" class="form-control" id="archivo2" name="archivo2" accept="image/*">
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                      <button type="submit" class="btn btn-primary" id="guardarCambiosBtn3" onclick="submitForm3()">Guardar cambios</button>
+                                  </div>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+          <script>
+            $(document).ready(function () {
+              // Función para manejar la búsqueda
+              $("#searchButtonp").click(function () {
+                var searchText = $("#searchInputp").val().toLowerCase();
+
+                // Filtrar la tabla según el texto de búsqueda
+                $("table tr").filter(function () {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+                });
+              });
+            });
+          </script>
+
+      <script>
+        function agregarProducto() {
+          // Obtener valores comunes independientemente de la categoría
+          let nombreproducto = document.getElementById('nombredelproducto').value;
+          let categoria = document.getElementById('sel1').value;
+          let detalle = document.getElementById('detalle').value;
+
+          console.log('Nombre: ' + nombreproducto);
+
+          // Definir variables para autor y editorial fuera de la condición
+          let autor = "";
+          let editorial = "";
+
+          // Verificar la categoría
+          if (categoria === "Libros") {
+            // Si es "Libros", obtener valores específicos
+            autor = document.getElementById('autor-id').value;
+            editorial = document.getElementById('editorial-id').value;
+
+            console.log('Autor: ' + autor);
+            console.log('Editorial: ' + editorial);
+          }
+
+          // Obtener el archivo seleccionado
+          let archivoInput = document.getElementById('archivo1');
+          let archivo = archivoInput.files[0];
+
+          // Crear un objeto FormData para enviar el archivo
+          let formData = new FormData();
+          formData.append('imagen', archivo);
+
+          // Enviar el archivo al servidor usando AJAX
+          $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8091/subirImagen', // URL de tu endpoint en el servidor
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+              // `response` debe contener la dirección de la imagen después de ser guardada en el servidor
+              let imagen = response;
+              console.log('Imagen guardada en: ' + imagen);
+
+              // Construir la cadena de la mutación
+              let mutation = `
+                mutation AgregarProducto($input: ProductoInput) {
+                  agregarProducto(input: $input) {
+                    id
+                    nombreproducto
+                    categoria
+                    autor
+                    editorial
+                    detalle
+                    imagen
+                  }
+                }
+              `;
+
+              // Enviar la solicitud AJAX para agregar el producto
+              $.ajax({
+                type: "POST",
+                url: "http://localhost:8091/graphql",
+                contentType: "application/json",
+                timeout: 15000,
+                data: JSON.stringify({
+                  query: mutation,
+                  variables: {
+                    input: {
+                      nombreproducto: nombreproducto,
+                      categoria: categoria,
+                      autor: autor,
+                      editorial: editorial,
+                      detalle: detalle,
+                      imagen: imagen
+                    }
+                  }
+                }),
+                success: function (response) {
+                  alert(response.data.agregarProducto.id);
+                  getProductos();
+                },
+                error: function (error) {
+                  console.error(error);
+                }
+              });
+            },
+            error: function (error) {
+              console.error('Error al subir la imagen:', error);
+            }
+          });
+        }
+      </script>
+
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-3 shadow p-4">
+          <h5>Agregar Producto</h5>
+          <form id="productoForm" action="/action_page.php" method="post" enctype="multipart/form-data">  
+              <div class="mb-3">
+                  <label for="nombredelproducto">Nombre del Producto:</label>
+                  <input type="text" class="form-control" id="nombredelproducto" placeholder="Ingresa el Nombre del Producto" name="nombredelproducto">
+              </div>
+              <div class="mb-3">
+                  <label for="sel1" class="form-label">Categoría:</label>
+                  <select class="form-select" id="sel1" name="categoria">
+                      <option>Equipos</option>
+                      <option>Materiales</option>
+                      <option>Libros</option>
+                  </select>
+              </div>
+              <div class="mb-3" style="display: none;">
+                  <label for="autor-id">Autor:</label>
+                  <input type="text" class="form-control" id="autor-id" placeholder="Ingresa el Autor" name="autor-id">
+              </div>
+              <div class="mb-3" style="display: none;">
+                  <label for="editorial-id">Editorial:</label>
+                  <input type="text" class="form-control" id="editorial-id" placeholder="Ingresa la Editorial" name="editorial-id">
+              </div>
+              <div class="mb-3">
+                  <label for="detalle">Detalle:</label>
+                  <input type="text" class="form-control" id="detalle" placeholder="Ingresa el detalle" name="detalle">
+              </div>
+              <div class="mb-3">
+                  <label for="archivo1">Selecciona un archivo:</label>
+                  <input type="file" id="archivo1" name="imagen" accept=".jpg, .png">
+              </div>
+              <button type="button" class="btn btn-primary" onclick="agregarProducto()">Ingresar</button>
+          </form>
+      </div>
+      </div>
+</div>
+
+
+
+<script>
+  document.getElementById('archivo').addEventListener('change', function() {
+const input = this;
+const preview = document.getElementById('archivoPreview');
+
+if (input.files && input.files[0]) {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        preview.src = e.target.result;
+    };
+
+    reader.readAsDataURL(input.files[0]);
+}
+});
+</script>
+<script>
+$(document).ready(function() {
+// Manejar el evento de cambio en la lista desplegable
+$("#sel1").change(function() {
+    // Obtener el valor seleccionado
+    var selectedCategory = $(this).val();
+
+    // Mostrar/ocultar texto según la categoría seleccionada
+    if (selectedCategory === "Libros") {
+        $("#autor-id, #editorial-id").parent().show();
+    } else {
+        $("#autor-id, #editorial-id").parent().hide();
+    }
+});
+});
+</script>
+
+
+<div id="menu4" class="container-fluid tab-pane fade">
+  <br>
+  <div class="container mt-3">
+      <h3 class="text-center">Administrar Solicitudes</h3>
+      <div class="row">
+          <div class="col-lg-10 col-md-12 shadow p-4">
+              <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Buscar Solicitud..." id="searchInputSolicitud">
+                  <button class="btn btn-outline-secondary" type="button" id="searchButtonSolicitud">Buscar</button>
+              </div>
+              <h5>Lista de Solicitudes</h5>
+              <div class="table-responsive">
+                  <table id="tablaSolicitud" class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>N</th>
+                              <th>ID</th>
+                              <th>Estado</th>
+                              <th>Fecha devuelta</th>
+                              <th>Producto</th>
+                              <th>Imagen</th>
+                              <th>Categoría</th>
+                              <th>Usuario</th>
+                              <th>rut</th>
+                              <th>Acciones</th>
+                          </tr>
+                      </thead>
+                      <!-- Agrega aquí las filas de la tabla -->
+                  </table>
+              </div>
+
+              <div class="d-flex justify-content-between">
+                  <button class="btn btn-success btn-sm">Atrás</button>
+                  <button class="btn btn-success btn-sm">Siguiente</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script>
+      $(document).ready(function () {
+          // Función para manejar la búsqueda
+          $("#searchButtonSolicitud").click(function () {
+              var searchText = $("#searchInputSolicitud").val().toLowerCase();
+
+              // Filtrar la tabla según el texto de búsqueda
+              $("table tr").filter(function () {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+              });
+          });
+      });
+  </script>
+</div>
+
+   
+
+
+
+
+
+    <div id="menu5" class="container-fluid tab-pane fade">
+      <br>
+      <h3>Administrar Perfiles</h3>
+      <div class="row">
+        <div class="col-sm-6 shadow p-4">
+            <head>
+                <script>
+                  function addPerfil() {
+                let nombre = document.getElementById('nombre').value;
+
+                let permisosSeleccionados = [];
+                let checkboxes = document.querySelectorAll('.permiso-checkbox');
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        permisosSeleccionados.push(checkbox.id);
+                    }
+                });
+
+
+                let mutation = `
+                    mutation AddPerfil($input: PerfilInput) {
+                        addPerfil(input: $input) {
+                            id
+                            nombre
+                            permisos
+                        }
+                    }
+                `;
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8091/graphql",
+                    contentType: "application/json",
+                    timeout: 15000,
+                    data: JSON.stringify({
+                        query: mutation,
+                        variables: {
+                            input: {
+                                nombre: nombre,
+                                permisos: permisosSeleccionados,
+                            }
+                        }
+                    }),
+
+                    success: function(response) {
+                    getPerfiles();
+                    let alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success';
+
+                    // Crear contenido HTML para la alerta de éxito
+                    alertDiv.innerHTML = `
+                        <strong>Perfil Creado!</strong> ID: ${response.data.addPerfil.id}.
+                        Puedes Consultar el perfil creado <a href="#" class="alert-link">mas abajo</a>.
+                    `;
+
+                    // Insertar la alerta al principio del cuerpo del documento
+                    document.body.insertBefore(alertDiv, document.body.firstChild);
+
+                    // Configurar un temporizador para ocultar la alerta después de 5 segundos
+                    setTimeout(function() {
+                        alertDiv.style.display = 'none'; // Ocultar la alerta
+                    }, 4000);
+                  }
+
+
+                });
+            }
+                </script>
+                <script>
+                            function getPerfiles() {
+                let query = `
+                    query miQuery {
+                        getPerfiles {
+                            id
+                            nombre
+                            permisos
+                        }
+                    }
+                `;
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:8091/graphql",
+                    contentType: "application/json",
+                    timeout: 15000,
+                    data: JSON.stringify({
+                        query: query,
+                        variables: {}
+                    }),
+                    success: function (response) {
+                        console.log(response);
+                        let select = document.getElementById('Perfil');
+                        let nuevaTabla = document.createElement('table');
+                        nuevaTabla.id = 'tblPerfiles';
+
+                        if (response.data.getPerfiles.length > 0) {
+                            // Crear encabezados
+                            let trH = document.createElement('tr');
+                            let tdH1 = document.createElement('td');
+                            let tdH2 = document.createElement('td');
+                            let tdH4 = document.createElement('td');
+                            let tdH3 = document.createElement('td');
+                            tdH1.innerHTML = "ID";
+                            tdH2.innerHTML = "NOMBRE";
+                            tdH4.innerHTML = "PERMISO";
+                            tdH3.innerHTML = "ACCIÓN";
+                            trH.appendChild(tdH1);
+                            trH.appendChild(tdH2);
+                            trH.appendChild(tdH4);
+                            trH.appendChild(tdH3);
+                            nuevaTabla.appendChild(trH);
+
+                            response.data.getPerfiles.forEach((element) => {
+                                // Crear opción en el select
+                                const opt = document.createElement("option");
+                                opt.value = element.id;
+                                opt.text = element.nombre;
+                                select.appendChild(opt);
+
+                                // Crear fila de la tabla con datos y botón de borrar
+                                let trH = document.createElement('tr');
+                                let tdH1 = document.createElement('td');
+                                let tdH2 = document.createElement('td');
+                                let tdH4 = document.createElement('td');
+                                let tdH3 = document.createElement('td');
+                                tdH1.innerHTML = element.id;
+                                tdH2.innerHTML = element.nombre;
+                                tdH4.innerHTML = element.permisos;
+                                // Crear botón de borrar con la clase "btn btn-danger"
+                                let btnBorrar = document.createElement('button');
+                                btnBorrar.type = 'button';
+                                btnBorrar.className = 'btn btn-danger';
+                                btnBorrar.innerHTML = 'Borrar';
+                                btnBorrar.addEventListener('click', function () {
+                                    // Mostrar una confirmación antes de borrar
+                                    let confirmacion = window.confirm("¿Seguro que desea borrar este perfil?");
+
+                                    if (confirmacion) {
+                                        // Llamada a la función para borrar con el ID correspondiente
+                                        borrarPerfil(element.id);
+                                    } else {
+                                        // Acciones a realizar si el usuario cancela la confirmación
+                                        console.log("Borrado cancelado por el usuario.");
+                                    }
+                                });
+
+                                // Agregar botón a la celda de la acción
+                                tdH3.appendChild(btnBorrar);
+
+                                trH.appendChild(tdH1);
+                                trH.appendChild(tdH2);
+                                trH.appendChild(tdH4);
+                                trH.appendChild(tdH3);
+                                nuevaTabla.appendChild(trH);
+                            });
+                        } else {
+                            console.log("No se encontraron perfiles.");
+                        }
+
+                        // Reemplazar la tabla existente con la nueva tabla
+                        let tablaExistente = document.getElementById('tblPerfiles');
+                        if (tablaExistente) {
+                            tablaExistente.parentNode.replaceChild(nuevaTabla, tablaExistente);
+                        } else {
+                            // Si no hay tabla existente, simplemente agrega la nueva
+                            document.body.appendChild(nuevaTabla);
+                        }
+                    }
+                });
+            }
+
+                </script>
+                <script>
+                  function borrarPerfil(id) {
+                      let mutation = `
+                          mutation DeletePerfil($delPerfilId: ID!) {
+                              delPerfil(id: $delPerfilId) {
+                                  message
+                              }
+                          }
+                      `;
+
+                      $.ajax({
+                          type: "POST",
+                          url: "http://localhost:8091/graphql",
+                          contentType: "application/json",
+                          timeout: 15000,
+                          data: JSON.stringify({
+                              query: mutation,
+                              variables: {
+                                  delPerfilId: id
+                              }
+                          }),
+                          success: function(response) {
+                              alert(response.data.delPerfil.message);
+                             getPerfiles();
+
+                          },
+                          error: function(error) {
+                              console.error(error);
+                          }
+                      });
+                  }
+              </script>
+            </head>
+
+
+            <body>
+
+              <div class="form-container">
+                <form id="inventory-form">
+                  <label for="nombre">Ingresa el Nombre de Perfil:</label>
+                  <input type="text" id="nombre" name="nombre">
+                  <h4>Permisos:</h4>
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-inventario">
+                    <label class="form-check-label" for="permiso-inventario">Permiso de inventario</label>
+                  </div>
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-solicitudes">
+                    <label class="form-check-label" for="permiso-solicitudes">Permiso para solicitudes</label>
+                  </div>
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-prestamos">
+                    <label class="form-check-label" for="permiso-prestamos">Permiso para préstamos</label>
+                  </div>
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-tickets">
+                    <label class="form-check-label" for="permiso-tickets">Acceso a tickets</label>
+                  </div>
+
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-administrativa">
+                    <label class="form-check-label" for="permiso-administrativa">Acceso a administrativa</label>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-usuarios">
+                    <label class="form-check-label" for="permiso-usuarios">Acceso a Usuarios</label>
+                  </div>
+                  <div class="form-check form-switch">
+                    <input class="form-check-input permiso-checkbox" type="checkbox" id="permiso-reportes">
+                    <label class="form-check-label" for="permiso-reportes">Acceso a Generar Reportes</label>
+                  </div>
+
+                  <button type="button" onclick="addPerfil();" class="btn btn-primary">Agregar perfil</button>
+                </form>
+              </div>
+
+
+
+              
+              <div class="container mt-3">
+                <h2>Perfiles Creados</h2>
+                <div class="table-responsive">
+                    <table id="tblPerfiles" name="tblPerfiles" class="table">
+                        <!-- Contenido de la tabla -->
+                    </table>
+                </div>
+            </div>
+
+              <style>
+                /* Estilo para la tabla */
+                #tblPerfiles {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 10px;
+                }
+
+                /* Estilo para las celdas del encabezado */
+                #tblPerfiles th {
+                    background-color: #f2f2f2;
+                    padding: 10px;
+                    text-align: left;
+                }
+
+                /* Estilo para las celdas de datos */
+                #tblPerfiles td {
+                    padding: 10px;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                /* Estilo para las filas impares (opcional) */
+                #tblPerfiles tr:nth-child(odd) {
+                    background-color: #f9f9f9;
+                }
+            </style>
+              <script>
+                  getPerfiles();
+              </script>
+           </body>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div id="menu6" class="container-fluid tab-pane fade">
+        <br>
+        <div class="container mt-3">
+            <h3>Administrar Préstamos</h3>
+            <div class="row">
+                <div class="col-md-9 shadow p-4">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Buscar Préstamos..." id="searchInputPrestamos">
+                        <button class="btn btn-outline-secondary" type="button" id="searchButtonPrestamos">Buscar</button>
+                    </div>
+                    <h5>Lista de Préstamos</h5>
+                    <div class="table-responsive">
+                        <table id="tablaPrestamos" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>N</th>
+                                    <th>ID</th>
+                                    <th>ID Solicitud</th>
+                                    <th>Fecha</th>
+                                    <th>Usuario</th>
+                                    <th>Producto</th>
+                                    <th>Imagen</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <!-- Contenido de la tabla aquí -->
+                        </table>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-success btn-sm">Atrás</button>
+                        <button class="btn btn-success btn-sm">Siguiente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            getPrestamos();
+        </script>
+        <script>
+            $(document).ready(function () {
+                // Función para manejar la búsqueda
+                $("#searchButtonPrestamos").click(function () {
+                    var searchText = $("#searchInputPrestamos").val().toLowerCase();
+    
+                    // Filtrar la tabla según el texto de búsqueda
+                    $("table tr").filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(searchText) > -1);
+                    });
+                });
+            });
+        </script>
+    </div>
+    
+   
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+
+
+  <script src="administrar_dash.js"></script>
+
+  <!-- Chat Hector Aray  -->
+  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+  <div class="elfsight-app-77d37282-1855-482b-9b52-3497fc3b5364" data-elfsight-app-lazy></div>
+
+  
+</body>
+</html>
+
+
+

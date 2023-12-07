@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style-login.css">
+    <title>Login</title>
+</head>
+<body>
+    
+    <div class="login-card">
+        <h2>Recuperar Contraseña</h2>
+        <h3>Ingresa aquí tu Correo</h3>
+
+        <form class="login-form">
+            <input type="text" placeholder="Correo">
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          const loginForm = document.querySelector(".login-form");
+          const alertSuccess = `
+            <div class="alert alert-success">
+              <strong>¡Éxito!</strong> ¡Mail enviado Satisfactoriamente!
+            </div>`;
+          const alertError = `
+            <div class="alert alert-danger">
+              <strong>Error!</strong> ¡Los datos que ingresaste no son correctos!
+            </div>`;
+
+          loginForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const correoInput = loginForm.querySelector('input[type="text"]');
+            const correo = correoInput.value.trim();
+
+            const isValid = /^[a-zA-Z0-9]{1,12}@gmail\.com$/.test(correo);
+
+            const existingAlert = loginForm.querySelector(".alert");
+            if (existingAlert) {
+              existingAlert.remove();
+            }
+
+            if (isValid) {
+              loginForm.insertAdjacentHTML("beforeend", alertSuccess);
+              setTimeout(function() {
+                window.location.href = "index.html";
+              }, 2500);
+            } else {
+              loginForm.insertAdjacentHTML("beforeend", alertError);
+            }
+          });
+        });
+    </script>
+</body>
+</html>

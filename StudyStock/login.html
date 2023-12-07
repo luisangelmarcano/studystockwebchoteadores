@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Agregar la biblioteca de animaciones de animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> <!-- Add jQuery library -->
+  <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+
+    <script>
+      function validarFormulario() {
+        var rut = document.getElementById("id_rut").value;
+        var contraseña = document.getElementById("id_contraseña").value;
+  
+        // Ocultar el botón "Ingresar" y mostrar el botón de carga
+        var btnIngresar = document.getElementById("btnIngresar");
+        btnIngresar.classList.add("d-none");
+  
+        var btnCarga = document.getElementById("btnCarga");
+        btnCarga.classList.remove("d-none");
+  
+        // Limpiar información anterior
+        $("#info-container").html("");
+  
+        // Configurar temporizador para ocultar el botón de carga después de 5 segundos
+        setTimeout(function() {
+          btnCarga.classList.add("d-none");
+          btnIngresar.classList.remove("d-none");
+        }, 5000);
+  
+        // Validar usuario en el servidor
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:8091/graphql",
+          contentType: "application/json",
+          data: JSON.stringify({
+            query: `
+              mutation ($rut: String!, $pass: String!) {
+                login(rut: $rut, pass: $pass)
+              }
+            `,
+            variables: {
+              rut: rut,
+              pass: contraseña
+            }
+          }),
+          success: function(response) {
+  // Decodificar el token JWT
+  var decoded = jwt_decode(response.data.login);
+
+  // Acceder al nombre del perfil
+  var perfil = decoded.perfil;
+  var permisos = decoded.permisos;
+  var nombre = decoded.nombre;
+  var userId = decoded.userId;
+   // Almacenar la información del usuario en el almacenamiento local
+  localStorage.setItem('rut', rut);
+  localStorage.setItem('perfil', perfil);
+  localStorage.setItem('permisos', permisos);  
+  localStorage.setItem('nombre', nombre);
+  localStorage.setItem('userId', userId);       
+  // Mostrar información sobre Rut, Contraseña y si existen o no
+  var infoContainer = $("#info-container");
+  infoContainer.html(`
+    <div class="alert alert-info" style="word-wrap: break-word;">
+      <strong>Info!</strong> Rut: ${rut}, Contraseña: ${contraseña}, Token: ${response.data.login}, Perfil: ${perfil}, Permisos: ${permisos}
+    </div>
+  `);
+
+  if (response.data.login) {
+    // Mostrar un mensaje con el nombre del perfil
+    alert('bienvenido! '+ nombre +' Inicio de sesión exitoso como ' + perfil);
+    window.location.href = 'index.html';
+  }
+  else {
+    alert("Credenciales incorrectas. Inténtelo de nuevo.");
+  }
+},
+          error: function(error) {
+            console.error("Error en la solicitud AJAX", error);
+          }
+        });
+  
+        // Evitar que el formulario se envíe por defecto
+        return false;
+      }
+  
+      // Función para obtener y mostrar los permisos del usuario
+    </script>
+  </head>
+
+  
+ 
+
+<body class="bg-light">
+  <div class="container mt-5 d-flex justify-content-center align-items-center">
+    <div class="col-sm-5 shadow p-5 animate__animated animate__fadeIn">
+      <h2 class="text-center">Login StudyStock📚</h2>
+      <form onsubmit="return validarFormulario()">
+        <div class="mb-3 mt-3">
+          <label for="email">Rut:</label>
+          <input type="text" class="form-control" id="id_rut" placeholder="12.345.678-9" name="id_rut">
+        </div>
+        <div class="mb-3">
+          <label for="pwd">Contraseña:</label>
+          <input type="password" class="form-control" id="id_contraseña" placeholder="pepito123" name="id_contraseña">
+          <label for="pwd"><a href="index.html" style="color: #007FFF;">¿Olvidaste tu Contraseña?</a></label>
+        </div>
+        <div class="form-check mb-3">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember"> Recuérdame
+          </label>
+        </div>
+
+        <!-- Contenedor para el botón "Ingresar" y el botón de carga -->
+        <div class="d-flex justify-content-between">
+          <!-- Botón "Ingresar" inicialmente visible -->
+          <button id="btnIngresar" type="submit" class="btn btn-primary btn-block">Ingresar</button>
+
+          <!-- Botón de carga inicialmente oculto -->
+          <button id="btnCarga" class="btn btn-primary d-none" disabled>
+            <span class="spinner-border spinner-border-sm"></span>
+            Ingresando...
+          </button>
+        </div>
+      </form>
+
+      <!-- Contenedor para mostrar información sobre Rut, Contraseña y si existen o no -->
+      <div id="info-container"></div>
+    </div>
+  </div>
+
+</body>
+</html>

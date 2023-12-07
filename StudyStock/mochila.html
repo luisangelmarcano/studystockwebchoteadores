@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+
+
+<html lang="en">   
+<head>
+  <title>StudyStock||Inicio</title>
+  <link rel="stylesheet" href="style-prueba.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script 
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-sm navbar-dark color-nav fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)"></a>
+    <img src="imagenes/logo.png" alt="logotipo" class="logo-principal" />
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="index.html">StudyStock</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Quienes_Somos.html">Quienes Somos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Contactanos.html">Contacto</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="Necesitas_Ayuda.html">¿Necesitas Ayuda?</a>
+      </ul>
+      <a class="extra-nav-item">
+        <!-- Botón Mochila -->
+        <a id="botonMochila" class="btn btn-info" style="display: none;">Mochila</a>
+      </a>
+      <a class="extra-nav-item">
+        <!-- Cambiado de <button> a <a> -->
+        <a id="botonDashboard" class="btn btn-warning" style="display: none;">DashBoard</a>
+      </a>
+
+      <a href="login.html" class="extra-nav-item"><button class="ingresar-button">Iniciar Sesion</button></a>
+
+
+
+      <script src="script.js"></script>
+      <script>
+        window.onload = function () {
+  // Recuperar la información del usuario del almacenamiento local
+  var rut = localStorage.getItem('rut');
+  var perfil = localStorage.getItem('perfil');
+  var nombre = localStorage.getItem('nombre');
+  var permisos = localStorage.getItem('permisos');
+
+  // Obtener referencia al botón de Dashboard y al botón de Iniciar Sesión
+  var botonDashboard = document.getElementById('botonDashboard');
+  var botonIniciarSesion = document.querySelector('.ingresar-button');
+  var botonMochila = document.getElementById('botonMochila');
+
+  // Actualizar el contenido de la página con la información del usuario
+  if (rut && perfil) {
+    // Ocultar el botón de inicio de sesión
+    botonIniciarSesion.style.display = 'none';
+
+    // Mostrar el botón de Dashboard si el usuario tiene al menos uno de los permisos requeridos
+    if (tienePermisos(permisos)) {
+      botonDashboard.style.display = 'inline-block';
+
+      // Agregar el atributo href al botón de Dashboard
+      botonDashboard.setAttribute('href', 'panelDashboard.html');
+
+      var userInfo = document.createElement('extra-nav-item'); // Crear un nuevo div para mostrar la información del usuario
+      userInfo.innerHTML =
+        '👤 Hola ' +
+        nombre +
+        ' STATUS: ONLINE 🟢 <button class="cerrarSesionbtn" onclick="cerrarSesion()">Cerrar Sesión</button>';
+      userInfo.style.marginLeft = 'auto'; // Mover el contenido a la derecha
+      userInfo.style.textAlign = 'right'; // Alinear el texto a la derecha
+
+      document.querySelector('.navbar-nav').appendChild(userInfo); // Agregar la información del usuario a la barra de navegación
+    } else {
+      var userInfo = document.createElement('extra-nav-item'); // Crear un nuevo div para mostrar la información del usuario
+      userInfo.innerHTML =
+        '👤 Hola ' +
+        nombre +
+        ' STATUS: ONLINE 🟢 <button class="cerrarSesionbtn1" onclick="cerrarSesion()">Cerrar Sesión</button>';
+      userInfo.style.marginLeft = 'auto'; // Mover el contenido a la derecha
+      userInfo.style.textAlign = 'right'; // Alinear el texto a la derecha
+
+      document.querySelector('.navbar-nav').appendChild(userInfo); // Agregar la información del usuario a la barra de navegación
+
+      botonDashboard.style.display = 'none';
+    }
+
+    // Verificar si el perfil es "Alumno" y mostrar el botón de Mochila
+    if (perfil === 'Alumno') {
+      botonMochila.style.display = 'inline-block';
+      botonMochila.setAttribute('href', 'mochila.html');
+    } else {
+      // Si no es "Alumno", ocultar el botón de Mochila
+      botonMochila.style.display = 'none';
+    }
+  } else {
+    // Si no hay sesión iniciada, ocultar ambos botones
+    botonDashboard.style.display = 'none';
+    botonMochila.style.display = 'none';
+  }
+};
+
+        function tienePermisos(permisos) {
+          // Verificar si el usuario tiene al menos uno de los permisos requeridos
+          return (
+            permisos.includes('permiso-inventario') ||
+            permisos.includes('permiso-solicitudes') ||
+            permisos.includes('permiso-prestamos') ||
+            permisos.includes('permiso-administrativa')
+          );
+        }
+
+        function cerrarSesion() {
+          // Eliminar la información del usuario del almacenamiento local
+          localStorage.removeItem('rut');
+          localStorage.removeItem('perfil');
+          localStorage.removeItem('nombre');
+          localStorage.removeItem('permisos');
+
+          // Recargar la página para reflejar los cambios
+          location.reload();
+        }
+      </script>
+
+
+
+    </div>
+  </div>
+</nav>
+<!-- FIN NAVBAR -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<div class="container-fluid mt-3 d-flex justify-content-center align-items-center" style="margin-top: 80px;">
+  <h3 class="display-0">StudyStock</h3>
+</div>
+</body>
+</html>
+<hr>
+
+
+
+
+
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 w3-animate-left">
+      <h1></h1>
+      <h1></h1>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+  <script src="script.js"></script>
+</body>
+
+  <script src="script.js"></script>
+  </body>
+</html>
